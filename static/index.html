@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实时语音转写 (SenseVoice)</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f5f5f7; }
+        .container { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h1 { text-align: center; color: #1d1d1f; }
+        .controls { text-align: center; margin: 20px 0; }
+        button { padding: 12px 24px; border-radius: 20px; border: none; font-size: 16px; cursor: pointer; transition: all 0.2s; font-weight: 600; }
+        #startBtn { background-color: #0071e3; color: white; }
+        #startBtn:hover { background-color: #0077ed; }
+        #stopBtn { background-color: #ff3b30; color: white; display: none; }
+        #stopBtn:hover { background-color: #ff453a; }
+        
+        #status { text-align: center; color: #86868b; margin-bottom: 20px; font-size: 14px; }
+        
+        .output-box { border: 1px solid #d2d2d7; border-radius: 12px; min-height: 300px; padding: 20px; background: #fafafa; position: relative; }
+        .message { margin-bottom: 12px; line-height: 1.6; }
+        .final { color: #1d1d1f; }
+        .partial { color: #86868b; font-style: italic; }
+        .tag { display: inline-block; background: #fffbe6; color: #b78103; padding: 2px 6px; border-radius: 4px; font-size: 12px; margin-left: 4px; border: 1px solid #ffe58f; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>实时语音转写 Demo</h1>
+        <div id="status">准备就绪</div>
+        
+        <div class="controls">
+            <button id="startBtn" onclick="startRecording()">开始录音</button>
+            <button id="stopBtn" onclick="stopRecording()">停止录音</button>
+        </div>
+        
+        <div id="output" class="output-box"></div>
+    </div>
+
+    <script>
+        let audioContext;
+        let mediaStream;
+        let processor;
+        let socket;
+        let isRecording = false;
+
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const statusDiv = document.getElementById('status');
+        const outputDiv = document.getElementById('output');
+        
+        // Audio processing settings
+        const TARGET_SAMPLE_RATE = 16000;
+        const BUFFER_SIZE = 4096;
+
+        async function startRecording() {
+            try {
+                // Initialize WebSocket
+                const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                socket = new WebSocket(`${protocol}//${window.location.host}/ws`);
+                
+                socket.onopen = async () => {
+                    console.log("[Client] WebSocket connected");
+                    statusDiv.textContent = "正在连接麦克风...";
+                    try {
+                        await initAudio();
+                        isRecording = true;
+                        updateUI(true);
+                        statusDiv.textContent = "正在录音 (VAD检测中)...";
+                        console.log("[Client] Audio initialized and recording started");
+                    } catch (e) {
+                        console.error("[Client] Audio init failed:", e);
+                        statusDiv.textContent = "麦克风初始化失败: " + e.message;
+                    }
+                };
+
+                socket.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    handleServerMessage(data);
+                };
+
+                socket.onclose = () => {
+                    if (isRecording) stopRecording();
+                    statusDiv.textContent = "连接已断开";
+                };
+
+                socket.onerror = (error) => {
+                    console.error("WebSocket Error:", error);
+                    statusDiv.textContent = "连接发生错误";
+                };
+
+            } catch (err) {
+                console.error("Error starting:", err);
+                statusDiv.textContent = "无法启动录音: " + err.message;
+            }
+        }
+
+        async function getAudioStream() {
+            // Modern browsers
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                return await navigator.mediaDevices.getUserMedia({ audio: true });
+            }
+            
+            // Legacy browsers (webkit, moz, ms)
+            const getUserMedia = navigator.getUserMedia || 
+                               navigator.webkitGetUserMedia || 
+                               navigator.mozGetUserMedia || 
+                               navigator.msGetUserMedia;
+                               
+            if (getUserMedia) {
+                return new Promise((resolve, reject) => {
+                    getUserMedia.call(navigator, { audio: true }, resolve, reject);
+                });
+            }
+            
+            throw new Error("浏览器不支持 getUserMedia，请尝试使用 localhost 或 HTTPS 访问。");
+        }
+
+        async function initAudio() {
+            try {
+                mediaStream = await getAudioStream();
+            } catch (e) {
+                console.error("[Client] getUserMedia failed:", e);
+                throw new Error("麦克风权限被拒绝或环境不支持: " + e.message);
+            }
+            
+            audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: TARGET_SAMPLE_RATE });
+            
+            // Resume AudioContext if suspended (browser policy)
+            if (audioContext.state === 'suspended') {
+                await audioContext.resume();
+                console.log("[Client] AudioContext resumed");
+            }
+            
+            const source = audioContext.createMediaStreamSource(mediaStream);
+            
+            // Create ScriptProcessor
+            // bufferSize: 4096 is good for stability, but adds latency (4096/16000 = 256ms)
+            // Let's try 2048 (128ms) or 1024 (64ms) for better responsiveness
+            processor = audioContext.createScriptProcessor(2048, 1, 1);
+            
+            // Global counter for debugging
+            let chunkCount = 0;
+
+            processor.onaudioprocess = (e) => {
+                if (!isRecording) return;
+                
+                const inputData = e.inputBuffer.getChannelData(0);
+                
+                // Debug: Check if we have audio signal (not silence)
+                // Throttle logs to avoid spamming console
+                chunkCount++;
+                // if (chunkCount % 50 === 0) {
+                //      const maxVal = inputData.reduce((max, n) => Math.max(max, Math.abs(n)), 0);
+                //      console.log(`[Client] Sending chunk #${chunkCount}, Max Amp: ${maxVal.toFixed(4)}`);
+                // }
+
+                const pcmData = floatTo16BitPCM(inputData);
+                
+                if (socket && socket.readyState === WebSocket.OPEN) {
+                    socket.send(pcmData);
+                }
+            };
+            
+
+            
+            source.connect(processor);
+            processor.connect(audioContext.destination);
+        }
+
+        function floatTo16BitPCM(input) {
+            const output = new Int16Array(input.length);
+            for (let i = 0; i < input.length; i++) {
+                const s = Math.max(-1, Math.min(1, input[i]));
+                output[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+            }
+            return output.buffer;
+        }
+
+        function stopRecording() {
+            isRecording = false;
+            if (socket) socket.close();
+            if (mediaStream) mediaStream.getTracks().forEach(track => track.stop());
+            if (processor) processor.disconnect();
+            if (audioContext) audioContext.close();
+            
+            updateUI(false);
+            statusDiv.textContent = "录音已停止";
+            
+            // Remove any lingering partial text
+            const partialEl = document.getElementById('current-partial');
+            if (partialEl) partialEl.remove();
+        }
+
+        function updateUI(recording) {
+            startBtn.style.display = recording ? 'none' : 'inline-block';
+            stopBtn.style.display = recording ? 'inline-block' : 'none';
+        }
+
+        function handleServerMessage(data) {
+            if (data.type === 'partial') {
+                updatePartialText(data.text, data.tags);
+            } else if (data.type === 'final') {
+                appendFinalText(data.text, data.tags);
+            } else if (data.type === 'status') {
+                statusDiv.textContent = data.content === 'LISTENING' ? "正在聆听..." : data.content;
+            }
+        }
+
+        function updatePartialText(text, tags) {
+            let partialEl = document.getElementById('current-partial');
+            if (!partialEl) {
+                partialEl = document.createElement('div');
+                partialEl.id = 'current-partial';
+                partialEl.className = 'message partial';
+                outputDiv.appendChild(partialEl);
+            }
+            
+            const tagHtml = tags.map(t => `<span class="tag">${t.replace(/<\||\|>/g, '')}</span>`).join('');
+            partialEl.innerHTML = text + tagHtml;
+            
+            // Auto scroll
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+        }
+
+        function appendFinalText(text, tags) {
+            // Remove partial first
+            const partialEl = document.getElementById('current-partial');
+            if (partialEl) partialEl.remove();
+            
+            if (!text && tags.length === 0) return;
+            
+            const div = document.createElement('div');
+            div.className = 'message final';
+            
+            const tagHtml = tags.map(t => `<span class="tag">${t.replace(/<\||\|>/g, '')}</span>`).join('');
+            div.innerHTML = text + tagHtml;
+            
+            outputDiv.appendChild(div);
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+        }
+    </script>
+</body>
+</html>
