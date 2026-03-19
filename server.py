@@ -95,7 +95,11 @@ if not os.path.exists("static"):
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
-async def get_index():
+async def get_root():
+    return FileResponse("static/dashboard.html")
+
+@app.get("/monitoring")
+async def get_monitoring():
     response = FileResponse("static/index.html")
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     response.headers["Pragma"] = "no-cache"
