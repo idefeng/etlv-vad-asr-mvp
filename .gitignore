@@ -1,0 +1,2 @@
+*.onnx
+ANDROID/app/src/main/assets/model.int8.onnx

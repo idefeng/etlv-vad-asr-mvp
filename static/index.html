@@ -1,171 +1,375 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>实时语音转写 (SenseVoice)</title>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Scholarly Observer - AI 实时监控系统</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "secondary": "#006a6a",
+                "inverse-on-surface": "#eff1f3",
+                "on-surface-variant": "#424751",
+                "on-surface": "#191c1e",
+                "on-primary": "#ffffff",
+                "on-tertiary-fixed": "#002204",
+                "on-primary-fixed": "#001b3f",
+                "inverse-surface": "#2d3133",
+                "surface-container-highest": "#e0e3e5",
+                "surface-container-high": "#e6e8ea",
+                "outline-variant": "#c2c6d3",
+                "on-tertiary": "#ffffff",
+                "on-secondary": "#ffffff",
+                "error": "#ba1a1a",
+                "on-secondary-fixed-variant": "#004f4f",
+                "on-tertiary-container": "#7ecf79",
+                "surface-dim": "#d8dadc",
+                "surface-container-low": "#f2f4f6",
+                "inverse-primary": "#abc7ff",
+                "background": "#f7f9fb",
+                "on-secondary-container": "#006e6e",
+                "tertiary-container": "#005914",
+                "outline": "#737783",
+                "surface": "#f7f9fb",
+                "secondary-fixed": "#93f2f2",
+                "on-error": "#ffffff",
+                "primary": "#00346f",
+                "on-primary-fixed-variant": "#00458f",
+                "on-error-container": "#93000a",
+                "on-secondary-fixed": "#002020",
+                "surface-bright": "#f7f9fb",
+                "on-primary-container": "#9bbdff",
+                "tertiary": "#003f0b",
+                "primary-container": "#004a99",
+                "secondary-fixed-dim": "#76d6d5",
+                "secondary-container": "#90efef",
+                "on-tertiary-fixed-variant": "#005312",
+                "primary-fixed-dim": "#abc7ff",
+                "on-background": "#191c1e",
+                "primary-fixed": "#d7e2ff",
+                "tertiary-fixed-dim": "#88d982",
+                "surface-tint": "#255dad",
+                "surface-container": "#eceef0",
+                "surface-variant": "#e0e3e5",
+                "error-container": "#ffdad6",
+                "surface-container-lowest": "#ffffff",
+                "tertiary-fixed": "#a3f69c"
+              },
+              fontFamily: {
+                "headline": ["Manrope"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            },
+          },
+        }
+    </script>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f5f5f7; }
-        .container { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        h1 { text-align: center; color: #1d1d1f; }
-        .controls { text-align: center; margin: 20px 0; }
-        button { padding: 12px 24px; border-radius: 20px; border: none; font-size: 16px; cursor: pointer; transition: all 0.2s; font-weight: 600; }
-        #startBtn { background-color: #0071e3; color: white; }
-        #startBtn:hover { background-color: #0077ed; }
-        #stopBtn { background-color: #ff3b30; color: white; display: none; }
-        #stopBtn:hover { background-color: #ff453a; }
-        
-        #status { text-align: center; color: #86868b; margin-bottom: 20px; font-size: 14px; }
-        
-        .output-box { border: 1px solid #d2d2d7; border-radius: 12px; min-height: 300px; padding: 20px; background: #fafafa; position: relative; }
-        .message { margin-bottom: 12px; line-height: 1.6; }
-        .final { color: #1d1d1f; }
-        .partial { color: #86868b; font-style: italic; }
-        .tag { display: inline-block; background: #fffbe6; color: #b78103; padding: 2px 6px; border-radius: 4px; font-size: 12px; margin-left: 4px; border: 1px solid #ffe58f; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .message-animate {
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>实时语音转写 Demo</h1>
-        <div id="status">准备就绪</div>
-        
-        <div class="controls">
-            <button id="startBtn" onclick="startRecording()">开始录音</button>
-            <button id="stopBtn" onclick="stopRecording()">停止录音</button>
+<body class="text-on-surface">
+    <!-- SideNavBar -->
+    <aside class="h-screen w-64 fixed left-0 top-0 z-40 bg-surface-container-low flex flex-col py-6 px-4">
+        <div class="mb-10 px-2">
+            <h1 class="text-xl font-bold text-primary tracking-tight">Command Center</h1>
+            <p class="text-[10px] uppercase tracking-widest text-on-surface-variant/70 font-bold mt-1">AI Monitoring Active</p>
         </div>
-        
-        <div id="output" class="output-box"></div>
+        <nav class="flex-1 space-y-1">
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-primary-fixed/30 transition-colors duration-200" href="#">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-medium">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 bg-white text-primary font-bold rounded-lg shadow-sm scale-98 transition-transform duration-150" href="#">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+                <span class="font-medium">In-class Monitor</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-primary-fixed/30 transition-colors duration-200" href="#">
+                <span class="material-symbols-outlined">assignment_turned_in</span>
+                <span class="font-medium">Quality Assessment</span>
+            </a>
+        </nav>
+        <div class="mt-auto border-t border-outline-variant/30 pt-4 space-y-1">
+            <div class="flex items-center gap-3 px-4 py-2 bg-secondary-container/30 rounded-xl mb-4">
+                <span class="material-symbols-outlined text-secondary">smart_toy</span>
+                <span class="text-xs font-bold text-on-secondary-container">AI Insight Hub</span>
+            </div>
+            <a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant text-sm" href="#">
+                <span class="material-symbols-outlined text-lg">account_circle</span>
+                <span>Administrator</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- TopNavBar -->
+    <header class="fixed top-0 right-0 w-[calc(100%-16rem)] z-30 bg-white/80 backdrop-blur-xl border-b border-surface-container-low flex justify-between items-center h-16 px-8 ml-64">
+        <div class="flex items-center gap-6">
+            <span class="text-lg font-black text-primary">Scholarly Observer AI</span>
+            <div id="status" class="text-sm font-medium text-on-surface-variant transition-colors">准备就绪</div>
+        </div>
+        <div class="flex items-center gap-4">
+            <!-- Controls Integrated into Header -->
+            <button id="startBtn" onclick="startRecording()" class="bg-gradient-to-r from-primary to-primary-container text-on-primary px-5 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all hover:scale-105 active:scale-95">
+                <span class="material-symbols-outlined text-sm">mic</span>
+                开始监控
+            </button>
+            <button id="stopBtn" onclick="stopRecording()" class="hidden bg-error text-on-error px-5 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all hover:scale-105 active:scale-95">
+                <span class="material-symbols-outlined text-sm">stop</span>
+                停止监控
+            </button>
+            <img class="w-8 h-8 rounded-full border-2 border-primary/10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIpb9yGIymUhx_WrpDVw4Qk2OjGEKLpjqClhtOB4BSMlZL6zwWqd1smlnXDgOZCiwDZCUGNj16xUbQHZ8jfdA0XH24jZf5cB4tZ0M9xmhiVtWEdFzz5cKhuD9WdDdlqSq7yB_2Qxei41a_mZearRj4KESg_pNvQyc0JxVvn32B0DTT_v6cqo9CefcXpWChdTYdX7-p15zQGAS8-xoPBxYPtbnWeMqRT4qGffl_2piUbJNiOn0QPCS3n7AN8z0J3kKF2kaWKfz0ji8"/>
+        </div>
+    </header>
+
+    <!-- Main Canvas -->
+    <main class="ml-64 pt-16 min-h-screen bg-surface p-8">
+        <div class="max-w-[1600px] mx-auto grid grid-cols-12 gap-8">
+            <!-- Left Column: Video & Stats (Column Span 8) -->
+            <div class="col-span-8 space-y-8">
+                <!-- Video Player Section -->
+                <section class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm relative">
+                    <div class="relative aspect-video bg-black group">
+                        <img id="videoFeed" class="w-full h-full object-cover opacity-90" src="/static/live.jpg" onerror="this.style.display='none'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-6">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-4">
+                                    <div id="recordingTag" class="hidden flex items-center gap-2 bg-error text-white px-3 py-1 rounded-full text-xs font-bold animate-pulse">
+                                        <span class="w-2 h-2 bg-white rounded-full"></span> LIVE
+                                    </div>
+                                    <h2 class="text-white font-headline font-bold text-lg">实时课堂直播画面</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- System Stats (Bento Row) -->
+                <div class="grid grid-cols-3 gap-6" id="statsRow">
+                    <div class="bg-surface-container-lowest p-5 rounded-2xl shadow-sm border border-surface-container-low">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">memory</span>
+                            <span class="text-sm font-bold text-on-surface-variant">模型资源</span>
+                        </div>
+                        <div class="space-y-2">
+                             <div class="flex justify-between text-xs"><span class="text-on-surface-variant/60">运行设备</span><span id="stat-device" class="font-bold">-</span></div>
+                             <div class="flex justify-between text-xs"><span class="text-on-surface-variant/60">预估内存</span><span id="stat-model-mem" class="font-bold">-</span></div>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-lowest p-5 rounded-2xl shadow-sm border border-surface-container-low">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="material-symbols-outlined text-secondary">analytics</span>
+                            <span class="text-sm font-bold text-on-surface-variant">计算性能</span>
+                        </div>
+                        <div class="space-y-2">
+                             <div class="flex justify-between text-xs"><span class="text-on-surface-variant/60">CPU 使用</span><span id="stat-cpu" class="font-bold">-</span></div>
+                             <div class="flex justify-between text-xs"><span class="text-on-surface-variant/60">进程内存</span><span id="stat-proc-mem" class="font-bold">-</span></div>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-lowest p-5 rounded-2xl shadow-sm border border-surface-container-low">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="material-symbols-outlined text-tertiary">speed</span>
+                            <span class="text-sm font-bold text-on-surface-variant">识别效率</span>
+                        </div>
+                        <div class="space-y-2">
+                             <div class="flex justify-between text-xs"><span class="text-on-surface-variant/60">状态</span><span id="currentStatus" class="font-bold text-tertiary">稳定</span></div>
+                             <div class="flex justify-between text-xs"><span class="text-on-surface-variant/60">ASR 延迟</span><span class="font-bold">极快</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: ASR & AI Analysis (Column Span 4) -->
+            <div class="col-span-4 flex flex-col gap-8 h-[calc(100vh-8rem)]">
+                <!-- ASR Stream -->
+                <section class="flex-1 bg-surface-container-lowest rounded-2xl flex flex-col shadow-sm border-l-4 border-secondary overflow-hidden">
+                    <div class="p-4 border-b border-surface-container-low flex items-center justify-between">
+                        <h3 class="text-sm font-bold text-on-surface flex items-center gap-2">
+                            <span class="material-symbols-outlined text-secondary">forum</span>
+                            ASR 实时文本流
+                        </h3>
+                        <div id="streamIndicator" class="hidden items-center gap-1">
+                            <span class="w-2 h-2 bg-secondary rounded-full animate-pulse"></span>
+                            <span class="text-[10px] font-bold text-secondary uppercase">Streaming</span>
+                        </div>
+                    </div>
+                    <div id="output" class="flex-1 overflow-y-auto p-5 space-y-4 hide-scrollbar">
+                        <!-- Recognition results will be appended here -->
+                        <div class="flex flex-col items-center justify-center h-full text-on-surface-variant/40 space-y-2">
+                            <span class="material-symbols-outlined text-4xl">voice_over_off</span>
+                            <p class="text-sm">尚未开始监控</p>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-secondary-container/10 border-t border-surface-container-low">
+                        <div class="flex items-center gap-3 text-xs font-bold text-on-secondary-container">
+                            <span class="material-symbols-outlined text-sm">verified</span>
+                            <span>SenseVoice 实时加速已开启</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analysis Sidebar/Panel (Show/Hide) -->
+                <section id="analysisSection" class="hidden h-1/3 bg-surface-container-high rounded-2xl p-5 overflow-hidden flex flex-col border-l-4 border-primary shadow-inner">
+                    <h3 class="text-xs font-bold text-on-surface-variant mb-4 uppercase tracking-wider flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">auto_awesome</span>
+                        AI 智能分析报告
+                    </h3>
+                    <div id="analysis-content" class="text-sm text-on-surface leading-relaxed overflow-y-auto pr-2 hide-scrollbar markdown-body">
+                        正在等待监控结束...
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Intelligence Rail -->
+    <div id="analyzeBtn" onclick="analyzeText()" class="fixed bottom-8 right-8 flex items-center gap-4 bg-secondary text-on-secondary p-4 rounded-full shadow-2xl glass-panel group cursor-pointer hover:scale-110 active:scale-95 transition-all opacity-50 pointer-events-none z-50">
+        <div class="flex items-center gap-3 px-2">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+            <span id="analyzeBtnText" class="text-sm font-bold whitespace-nowrap">获取 AI 策略建议</span>
+        </div>
+        <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </div>
     </div>
 
+    <!-- Scripts -->
     <script>
         let audioContext;
         let mediaStream;
         let processor;
         let socket;
         let isRecording = false;
+        let hasContent = false;
 
         const startBtn = document.getElementById('startBtn');
         const stopBtn = document.getElementById('stopBtn');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const analyzeBtnText = document.getElementById('analyzeBtnText');
         const statusDiv = document.getElementById('status');
         const outputDiv = document.getElementById('output');
-        
-        // Audio processing settings
+        const analysisSection = document.getElementById('analysisSection');
+        const analysisContent = document.getElementById('analysis-content');
+        const videoFeed = document.getElementById('videoFeed');
+        const recordingTag = document.getElementById('recordingTag');
+        const streamIndicator = document.getElementById('streamIndicator');
+
         const TARGET_SAMPLE_RATE = 16000;
-        const BUFFER_SIZE = 4096;
 
-        async function startRecording() {
-            try {
-                // Initialize WebSocket
-                const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-                socket = new WebSocket(`${protocol}//${window.location.host}/ws`);
-                
-                socket.onopen = async () => {
-                    console.log("[Client] WebSocket connected");
-                    statusDiv.textContent = "正在连接麦克风...";
-                    try {
-                        await initAudio();
-                        isRecording = true;
-                        updateUI(true);
-                        statusDiv.textContent = "正在录音 (VAD检测中)...";
-                        console.log("[Client] Audio initialized and recording started");
-                    } catch (e) {
-                        console.error("[Client] Audio init failed:", e);
-                        statusDiv.textContent = "麦克风初始化失败: " + e.message;
-                    }
-                };
+        // Auto-connect viewer
+        window.onload = () => {
+            initWebSocket();
+            // Start video feed refresh
+            setInterval(updateLiveImage, 100);
+        };
 
-                socket.onmessage = (event) => {
-                    const data = JSON.parse(event.data);
-                    handleServerMessage(data);
-                };
-
-                socket.onclose = () => {
-                    if (isRecording) stopRecording();
-                    statusDiv.textContent = "连接已断开";
-                };
-
-                socket.onerror = (error) => {
-                    console.error("WebSocket Error:", error);
-                    statusDiv.textContent = "连接发生错误";
-                };
-
-            } catch (err) {
-                console.error("Error starting:", err);
-                statusDiv.textContent = "无法启动录音: " + err.message;
+        function updateLiveImage() {
+            if (videoFeed.style.display !== 'none') {
+                videoFeed.src = "/static/live.jpg?t=" + new Date().getTime();
             }
         }
 
-        async function getAudioStream() {
-            // Modern browsers
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                return await navigator.mediaDevices.getUserMedia({ audio: true });
-            }
+        function initWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws`;
+            socket = new WebSocket(wsUrl);
             
-            // Legacy browsers (webkit, moz, ms)
-            const getUserMedia = navigator.getUserMedia || 
-                               navigator.webkitGetUserMedia || 
-                               navigator.mozGetUserMedia || 
-                               navigator.msGetUserMedia;
-                               
-            if (getUserMedia) {
-                return new Promise((resolve, reject) => {
-                    getUserMedia.call(navigator, { audio: true }, resolve, reject);
-                });
-            }
-            
-            throw new Error("浏览器不支持 getUserMedia，请尝试使用 localhost 或 HTTPS 访问。");
-        }
-
-        async function initAudio() {
-            try {
-                mediaStream = await getAudioStream();
-            } catch (e) {
-                console.error("[Client] getUserMedia failed:", e);
-                throw new Error("麦克风权限被拒绝或环境不支持: " + e.message);
-            }
-            
-            audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: TARGET_SAMPLE_RATE });
-            
-            // Resume AudioContext if suspended (browser policy)
-            if (audioContext.state === 'suspended') {
-                await audioContext.resume();
-                console.log("[Client] AudioContext resumed");
-            }
-            
-            const source = audioContext.createMediaStreamSource(mediaStream);
-            
-            // Create ScriptProcessor
-            // bufferSize: 4096 is good for stability, but adds latency (4096/16000 = 256ms)
-            // Let's try 2048 (128ms) or 1024 (64ms) for better responsiveness
-            processor = audioContext.createScriptProcessor(2048, 1, 1);
-            
-            // Global counter for debugging
-            let chunkCount = 0;
-
-            processor.onaudioprocess = (e) => {
-                if (!isRecording) return;
-                
-                const inputData = e.inputBuffer.getChannelData(0);
-                
-                // Debug: Check if we have audio signal (not silence)
-                // Throttle logs to avoid spamming console
-                chunkCount++;
-                // if (chunkCount % 50 === 0) {
-                //      const maxVal = inputData.reduce((max, n) => Math.max(max, Math.abs(n)), 0);
-                //      console.log(`[Client] Sending chunk #${chunkCount}, Max Amp: ${maxVal.toFixed(4)}`);
-                // }
-
-                const pcmData = floatTo16BitPCM(inputData);
-                
-                if (socket && socket.readyState === WebSocket.OPEN) {
-                    socket.send(pcmData);
-                }
+            socket.onopen = () => {
+                statusDiv.textContent = "已连接到服务器 (接收模式)";
+                statusDiv.classList.add('text-secondary');
             };
             
-
+            socket.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                handleServerMessage(data);
+            };
             
-            source.connect(processor);
-            processor.connect(audioContext.destination);
+            socket.onclose = () => {
+                statusDiv.textContent = "连接断开";
+                statusDiv.classList.remove('text-secondary');
+                statusDiv.classList.add('text-error');
+                setTimeout(initWebSocket, 3000); // Reconnect
+            };
+        }
+
+        async function startRecording() {
+            if (isRecording) return;
+            try {
+                // Ensure socket is open
+                if (!socket || socket.readyState !== WebSocket.OPEN) {
+                    initWebSocket();
+                    await new Promise(r => setTimeout(r, 500));
+                }
+
+                mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: TARGET_SAMPLE_RATE });
+                
+                if (audioContext.state === 'suspended') await audioContext.resume();
+                
+                const source = audioContext.createMediaStreamSource(mediaStream);
+                processor = audioContext.createScriptProcessor(2048, 1, 1);
+                
+                processor.onaudioprocess = (e) => {
+                    if (!isRecording) return;
+                    const pcmData = floatTo16BitPCM(e.inputBuffer.getChannelData(0));
+                    if (socket && socket.readyState === WebSocket.OPEN) socket.send(pcmData);
+                };
+                
+                source.connect(processor);
+                processor.connect(audioContext.destination);
+                
+                isRecording = true;
+                hasContent = false;
+                outputDiv.innerHTML = "";
+                analysisSection.classList.add('hidden');
+                updateUI(true);
+                statusDiv.textContent = "正在录制音频并实时转写...";
+                statusDiv.classList.add('text-error');
+            } catch (err) {
+                console.error("Error starting:", err);
+                alert("无法启动录音: " + err.message);
+            }
+        }
+
+        function stopRecording() {
+            isRecording = false;
+            if (mediaStream) mediaStream.getTracks().forEach(track => track.stop());
+            if (processor) processor.disconnect();
+            if (audioContext) audioContext.close();
+            
+            updateUI(false);
+            statusDiv.textContent = "录音已停止";
+            statusDiv.classList.remove('text-error');
+            statusDiv.classList.add('text-secondary');
+            
+            // Auto trigger analysis
+            if (hasContent) {
+                analyzeText();
+            }
         }
 
         function floatTo16BitPCM(input) {
@@ -177,67 +381,102 @@
             return output.buffer;
         }
 
-        function stopRecording() {
-            isRecording = false;
-            if (socket) socket.close();
-            if (mediaStream) mediaStream.getTracks().forEach(track => track.stop());
-            if (processor) processor.disconnect();
-            if (audioContext) audioContext.close();
-            
-            updateUI(false);
-            statusDiv.textContent = "录音已停止";
-            
-            // Remove any lingering partial text
-            const partialEl = document.getElementById('current-partial');
-            if (partialEl) partialEl.remove();
-        }
-
         function updateUI(recording) {
-            startBtn.style.display = recording ? 'none' : 'inline-block';
-            stopBtn.style.display = recording ? 'inline-block' : 'none';
+            startBtn.classList.toggle('hidden', recording);
+            stopBtn.classList.toggle('hidden', !recording);
+            recordingTag.classList.toggle('hidden', !recording);
+            streamIndicator.classList.toggle('hidden', !recording);
+            
+            if (recording) {
+                analyzeBtn.classList.add('opacity-50', 'pointer-events-none');
+            } else if (hasContent) {
+                analyzeBtn.classList.remove('opacity-50', 'pointer-events-none');
+            }
         }
 
         function handleServerMessage(data) {
-            if (data.type === 'partial') {
-                updatePartialText(data.text, data.tags);
-            } else if (data.type === 'final') {
-                appendFinalText(data.text, data.tags);
-            } else if (data.type === 'status') {
-                statusDiv.textContent = data.content === 'LISTENING' ? "正在聆听..." : data.content;
+            if (data.type === 'partial_result' || data.type === 'partial') {
+                updatePartialText(data.text);
+            } else if (data.type === 'result' || data.type === 'final') {
+                hasContent = true;
+                appendFinalText(data.text, data.events || data.tags || []);
+                updateAnalyzeBtnState();
+            } else if (data.type === 'vad') {
+                statusDiv.textContent = data.status === 'speech_start' ? "正在说话..." : "静音";
+            } else if (data.type === 'sys_stats') {
+                updateStats(data);
+            } else if (data.type === 'analysis') {
+                showAnalysis(data.content);
+            } else if (data.type === 'error') {
+                alert(data.content);
+                analyzeBtnText.textContent = "获取 AI 策略建议";
             }
         }
 
-        function updatePartialText(text, tags) {
-            let partialEl = document.getElementById('current-partial');
+        function updatePartialText(text) {
+            let partialEl = document.getElementById('partial-result');
             if (!partialEl) {
                 partialEl = document.createElement('div');
-                partialEl.id = 'current-partial';
-                partialEl.className = 'message partial';
+                partialEl.id = 'partial-result';
+                partialEl.className = 'text-sm italic text-on-surface-variant/60 message-animate p-3 bg-surface-container-low rounded-xl';
                 outputDiv.appendChild(partialEl);
             }
-            
-            const tagHtml = tags.map(t => `<span class="tag">${t.replace(/<\||\|>/g, '')}</span>`).join('');
-            partialEl.innerHTML = text + tagHtml;
-            
-            // Auto scroll
+            partialEl.innerHTML = `<span class="font-bold">识别中:</span> ${text}`;
             outputDiv.scrollTop = outputDiv.scrollHeight;
         }
 
         function appendFinalText(text, tags) {
-            // Remove partial first
-            const partialEl = document.getElementById('current-partial');
+            const partialEl = document.getElementById('partial-result');
             if (partialEl) partialEl.remove();
             
-            if (!text && tags.length === 0) return;
+            if (!text && (!tags || tags.length === 0)) return;
             
             const div = document.createElement('div');
-            div.className = 'message final';
+            div.className = 'flex flex-col gap-2 p-3 bg-white rounded-xl shadow-sm border border-surface-container-low message-animate';
             
-            const tagHtml = tags.map(t => `<span class="tag">${t.replace(/<\||\|>/g, '')}</span>`).join('');
-            div.innerHTML = text + tagHtml;
+            const tagHtml = tags.map(t => `<span class="px-2 py-0.5 bg-secondary-container/30 text-secondary text-[10px] font-bold rounded capitalize">${t.replace(/<\||\|>/g, '')}</span>`).join('');
+            
+            div.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold text-on-surface-variant/40">${new Date().toLocaleTimeString()}</span>
+                    <div class="flex gap-1">${tagHtml}</div>
+                </div>
+                <p class="text-sm leading-relaxed">${text}</p>
+            `;
             
             outputDiv.appendChild(div);
             outputDiv.scrollTop = outputDiv.scrollHeight;
+        }
+
+        function updateStats(data) {
+            const info = data.model_info || {};
+            if (document.getElementById('stat-device')) document.getElementById('stat-device').textContent = info.device || '-';
+            if (document.getElementById('stat-model-mem')) document.getElementById('stat-model-mem').textContent = info.memory || '-';
+            if (document.getElementById('stat-cpu')) document.getElementById('stat-cpu').textContent = data.cpu || '-';
+            if (document.getElementById('stat-proc-mem')) document.getElementById('stat-proc-mem').textContent = data.proc_mem || '-';
+        }
+
+        function updateAnalyzeBtnState() {
+            if (!isRecording && hasContent) {
+                analyzeBtn.classList.remove('opacity-50', 'pointer-events-none');
+            }
+        }
+
+        function analyzeText() {
+            if (!socket || socket.readyState !== WebSocket.OPEN) {
+                alert("连接已断开，请刷新页面。");
+                return;
+            }
+            analyzeBtnText.textContent = "由 DeepSeek 生成建议...";
+            analysisSection.classList.remove('hidden');
+            analysisContent.innerHTML = "<em>正在请求 AI 专家进行智能分析...</em>";
+            socket.send(JSON.stringify({ type: "analyze" }));
+        }
+
+        function showAnalysis(content) {
+            analysisContent.innerHTML = marked.parse(content);
+            analyzeBtnText.textContent = "分析完成";
+            setTimeout(() => { analyzeBtnText.textContent = "重新获取建议"; }, 2000);
         }
     </script>
 </body>
