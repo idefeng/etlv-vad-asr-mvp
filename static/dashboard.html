@@ -14,59 +14,18 @@
             extend: {
               colors: {
                 "secondary": "#006a6a",
-                "inverse-on-surface": "#eff1f3",
                 "on-surface-variant": "#424751",
                 "on-surface": "#191c1e",
                 "on-primary": "#ffffff",
-                "on-tertiary-fixed": "#002204",
-                "on-primary-fixed": "#001b3f",
-                "inverse-surface": "#2d3133",
-                "surface-container-highest": "#e0e3e5",
-                "surface-container-high": "#e6e8ea",
-                "outline-variant": "#c2c6d3",
-                "on-tertiary": "#ffffff",
-                "on-secondary": "#ffffff",
-                "error": "#ba1a1a",
-                "on-secondary-fixed-variant": "#004f4f",
-                "on-tertiary-container": "#7ecf79",
-                "surface-dim": "#d8dadc",
-                "surface-container-low": "#f2f4f6",
-                "inverse-primary": "#abc7ff",
                 "background": "#f7f9fb",
-                "on-secondary-container": "#006e6e",
-                "tertiary-container": "#005914",
-                "outline": "#737783",
-                "surface": "#f7f9fb",
-                "secondary-fixed": "#93f2f2",
-                "on-error": "#ffffff",
                 "primary": "#00346f",
-                "on-primary-fixed-variant": "#00458f",
-                "on-error-container": "#93000a",
-                "on-secondary-fixed": "#002020",
-                "surface-bright": "#f7f9fb",
-                "on-primary-container": "#9bbdff",
-                "tertiary": "#003f0b",
                 "primary-container": "#004a99",
-                "secondary-fixed-dim": "#76d6d5",
-                "secondary-container": "#90efef",
-                "on-tertiary-fixed-variant": "#005312",
-                "primary-fixed-dim": "#abc7ff",
-                "on-background": "#191c1e",
-                "primary-fixed": "#d7e2ff",
-                "tertiary-fixed-dim": "#88d982",
-                "surface-tint": "#255dad",
-                "surface-container": "#eceef0",
-                "surface-variant": "#e0e3e5",
-                "error-container": "#ffdad6",
+                "surface-container-low": "#f2f4f6",
                 "surface-container-lowest": "#ffffff",
-                "tertiary-fixed": "#a3f69c"
+                "error": "#ba1a1a"
               },
-              fontFamily: {
-                "headline": ["Manrope"],
-                "body": ["Inter"],
-                "label": ["Inter"]
-              },
-              borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+              fontFamily: { "headline": ["Manrope"], "body": ["Inter"], "label": ["Inter"] },
+              borderRadius: { "xl": "0.5rem", "full": "0.75rem" },
             },
           },
         }
@@ -82,40 +41,40 @@
     <!-- SideNavBar (Shared) -->
     <aside class="h-screen w-64 fixed left-0 top-0 z-40 bg-surface-container-low flex flex-col py-6 px-4">
         <div class="mb-10 px-4">
-            <h1 class="text-xl font-bold text-primary tracking-tight font-headline">Command Center</h1>
-            <p class="text-xs text-on-surface-variant font-medium">AI Monitoring Active</p>
+            <h1 class="text-xl font-bold text-primary tracking-tight font-headline">监控指挥中心</h1>
+            <p class="text-xs text-on-surface-variant font-medium">AI 实时监测运行中</p>
         </div>
         <nav class="flex-grow space-y-1">
             <a class="flex items-center gap-3 px-4 py-3 bg-white text-primary font-bold rounded-lg shadow-sm" href="/dashboard">
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
-                <span class="font-label">Dashboard</span>
+                <span class="font-label">监控看板</span>
             </a>
             <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary-fixed/30" href="/management">
                 <span class="material-symbols-outlined">upload_file</span>
-                <span class="font-label">Pre-class Material</span>
+                <span class="font-label">课前备课</span>
             </a>
             <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary-fixed/30" href="/">
                 <span class="material-symbols-outlined">analytics</span>
-                <span class="font-label">In-class Monitor</span>
+                <span class="font-label">课堂实时监控</span>
             </a>
             <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary-fixed/30" href="/assessment">
                 <span class="material-symbols-outlined">assignment_turned_in</span>
-                <span class="font-label">Quality Assessment</span>
+                <span class="font-label">教学质量评估</span>
             </a>
             <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary-fixed/30" href="/login">
                 <span class="material-symbols-outlined">account_circle</span>
-                <span class="font-label">Login</span>
+                <span class="font-label">系统登录</span>
             </a>
         </nav>
         <div class="mt-auto border-t border-outline-variant/30 pt-6">
-            <div class="px-4 py-3 bg-primary text-on-primary rounded-xl mb-6 flex items-center justify-center gap-2 cursor-pointer hover:opacity-90">
+            <div class="px-4 py-3 bg-primary text-on-primary rounded-xl flex items-center justify-center gap-2 cursor-pointer hover:opacity-90">
                 <span class="material-symbols-outlined text-sm">smart_toy</span>
-                <span class="font-bold text-sm">AI Insight Hub</span>
+                <span class="font-bold text-sm">AI 智能辅助</span>
             </div>
         </div>
     </aside>
 
-    <!-- TopNavBar (Shared) -->
+    <!-- TopNavBar -->
     <header class="fixed top-0 right-0 w-[calc(100%-16rem)] z-30 bg-white/80 backdrop-blur-xl border-b border-surface-container-low h-16 px-8 flex justify-between items-center ml-64">
         <div class="flex items-center gap-8">
             <span class="text-lg font-black text-primary font-headline tracking-tighter">Scholarly Observer AI</span>
@@ -123,19 +82,18 @@
         <div class="flex items-center gap-4">
             <div class="relative">
                 <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline text-lg">search</span>
-                <input class="pl-10 pr-4 py-1.5 bg-surface-container-low border-none rounded-full text-sm w-64 focus:ring-2 focus:ring-primary/20" placeholder="查找课堂..." type="text"/>
+                <input class="pl-10 pr-4 py-1.5 bg-surface-container-low border-none rounded-full text-sm w-64 focus:ring-2 focus:ring-primary/20" placeholder="搜索课堂、教师或地点..." type="text"/>
             </div>
             <img class="w-8 h-8 rounded-full border-2 border-primary/10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtu8tSfeYE7LrGTMhMYIiY1ZVOp27l7ZsoUeMO8JiG49uwgqIF23Jw4LKlwd-bTnAsq8qBZBIcgQTu4WzZ4pUiML1dEaWsUq8MgeHlM6-29ImrDBMnGYtEBQY8REAPbaVVZfHL2no6Pkpl8v7mELvz4szLxKtqPFAlEpipOoZXOby5k_Wu7el9RusAH78aeEsrwLvGw_TQHDLjE1mhgIWAlIS-DoNp89x_7F0wyKdli1hj_9nLH2efU6ybZ77mvcWdPon8KyD7jkg"/>
         </div>
     </header>
 
-    <!-- Main Content Canvas -->
     <main class="ml-64 mt-16 p-10 min-h-screen">
         <div class="mb-10">
             <h2 class="text-3xl font-extrabold text-on-surface font-headline tracking-tight">教学监管驾驶舱</h2>
             <div class="flex items-center gap-2 mt-2">
                 <span class="flex h-2 w-2 rounded-full bg-secondary"></span>
-                <p class="text-on-surface-variant font-medium text-sm">当前全校范围内 AI 实时监测中 • 12 间异常课堂需关注</p>
+                <p class="text-on-surface-variant font-medium text-sm">全校 AI 实时监测中 • 12 间异常课堂需关注</p>
             </div>
         </div>
 
@@ -143,70 +101,91 @@
         <div class="bento-grid mb-10">
             <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border-b-2 border-transparent hover:border-primary transition-all">
                 <div class="flex justify-between items-start mb-4">
-                    <div class="p-2 bg-blue-50 text-primary rounded-lg">
-                        <span class="material-symbols-outlined">school</span>
-                    </div>
-                    <span class="text-secondary text-xs font-bold">+12% vs yesterday</span>
+                    <div class="p-2 bg-blue-50 text-primary rounded-lg"><span class="material-symbols-outlined">school</span></div>
+                    <span class="text-secondary text-xs font-bold">+12% 同比</span>
                 </div>
                 <p class="text-on-surface-variant text-sm font-medium">实时开课数</p>
                 <h3 class="text-3xl font-extrabold text-on-surface font-headline mt-1">1,248</h3>
             </div>
             <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border-b-2 border-transparent hover:border-error transition-all">
                 <div class="flex justify-between items-start mb-4">
-                    <div class="p-2 bg-red-50 text-error rounded-lg">
-                        <span class="material-symbols-outlined">warning</span>
-                    </div>
+                    <div class="p-2 bg-red-50 text-error rounded-lg"><span class="material-symbols-outlined">warning</span></div>
                     <span class="text-error text-xs font-bold">高风险介入</span>
                 </div>
-                <p class="text-on-surface-variant text-sm font-medium">累计预警数</p>
+                <p class="text-on-surface-variant text-sm font-medium">当日预警数</p>
                 <h3 class="text-3xl font-extrabold text-on-surface font-headline mt-1">42</h3>
             </div>
             <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border-b-2 border-transparent hover:border-secondary transition-all">
                 <div class="flex justify-between items-start mb-4">
-                    <div class="p-2 bg-teal-50 text-secondary rounded-lg">
-                        <span class="material-symbols-outlined">group</span>
-                    </div>
+                    <div class="p-2 bg-teal-50 text-secondary rounded-lg"><span class="material-symbols-outlined">group</span></div>
                     <span class="text-on-surface-variant text-xs font-medium">Top 3 异常</span>
                 </div>
-                <p class="text-on-surface-variant text-sm font-medium">异常活跃班级</p>
+                <p class="text-on-surface-variant text-sm font-medium">互动低迷班级</p>
                 <h3 class="text-3xl font-extrabold text-on-surface font-headline mt-1">18</h3>
             </div>
             <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border-b-2 border-transparent hover:border-primary transition-all">
                 <div class="flex justify-between items-start mb-4">
-                    <div class="p-2 bg-blue-50 text-primary rounded-lg">
-                        <span class="material-symbols-outlined">verified</span>
-                    </div>
+                    <div class="p-2 bg-blue-50 text-primary rounded-lg"><span class="material-symbols-outlined">verified</span></div>
                     <span class="text-primary text-xs font-bold">优秀率 94%</span>
                 </div>
-                <p class="text-on-surface-variant text-sm font-medium">平均教学质量指数</p>
+                <p class="text-on-surface-variant text-sm font-medium">全校教学指数</p>
                 <h3 class="text-3xl font-extrabold text-on-surface font-headline mt-1">92.4</h3>
             </div>
         </div>
 
-        <!-- Dashboard Layout -->
         <div class="asymmetric-grid">
             <div class="space-y-10">
                 <section>
                     <div class="flex justify-between items-end mb-6">
                         <h4 class="text-xl font-bold font-headline">活跃课堂实时监控</h4>
-                        <button class="text-primary font-bold text-sm hover:underline">查看全部 →</button>
+                        <button class="text-primary font-bold text-sm hover:underline">查看全部详情 →</button>
                     </div>
-                    <div class="space-y-4">
-                        <div class="bg-surface-container-lowest rounded-xl p-5 flex gap-6 items-center shadow-sm">
+                    <div class="grid grid-cols-1 gap-4">
+                        <!-- Card 1 -->
+                        <div class="bg-surface-container-lowest rounded-xl p-5 flex gap-6 items-center shadow-sm hover:bg-white transition-all">
                             <div class="w-48 h-28 rounded-lg overflow-hidden relative bg-black shrink-0">
                                 <img class="w-full h-full object-cover opacity-80" src="/static/live.jpg">
                                 <div class="absolute top-2 left-2 px-2 py-0.5 bg-error text-white text-[10px] font-bold rounded flex items-center gap-1">
-                                    <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> LIVE
+                                    <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> 直播中
                                 </div>
                             </div>
                             <div class="flex-grow">
-                                <h5 class="font-bold text-lg">高等数学 (下) - 微分方程</h5>
-                                <p class="text-on-surface-variant text-xs">张建国 教授 | 3号教学楼 302</p>
-                                <div class="mt-4 flex gap-4">
-                                    <div class="flex-1 bg-surface-container-low p-3 rounded-lg">
-                                        <p class="text-[10px] font-bold text-primary mb-1 uppercase tracking-wider">ASR 实时摘要</p>
-                                        <p class="text-xs text-on-surface leading-relaxed">“...关于通解和特解的转化关系，同学们注意这个常数项...”</p>
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h5 class="font-bold text-lg">高等数学 (下) - 微分方程</h5>
+                                        <p class="text-on-surface-variant text-xs">张建国 教授 | 3号教学楼 302</p>
                                     </div>
+                                    <div class="text-right">
+                                        <p class="text-[10px] font-bold text-secondary uppercase">专注度</p>
+                                        <p class="text-lg font-black text-secondary">88%</p>
+                                    </div>
+                                </div>
+                                <div class="mt-4 bg-surface-container-low p-3 rounded-lg">
+                                    <p class="text-[10px] font-bold text-primary mb-1 uppercase tracking-wider">实时 ASR 摘要</p>
+                                    <p class="text-xs text-on-surface leading-relaxed">“...关于通解和特解的转化关系，同学们注意这个常数项...”</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 2 (Mock) -->
+                        <div class="bg-surface-container-lowest rounded-xl p-5 flex gap-6 items-center shadow-sm hover:bg-white transition-all">
+                            <div class="w-48 h-28 rounded-lg overflow-hidden relative bg-slate-800 shrink-0">
+                                <div class="w-full h-full flex items-center justify-center text-slate-500 font-bold uppercase tracking-tighter text-2xl">Digital</div>
+                                <div class="absolute top-2 left-2 px-2 py-0.5 bg-secondary text-white text-[10px] font-bold rounded">在线课堂</div>
+                            </div>
+                            <div class="flex-grow">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h5 class="font-bold text-lg">数字信号处理</h5>
+                                        <p class="text-on-surface-variant text-xs">李明 副教授 | 腾讯会议 402-124</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-[10px] font-bold text-error uppercase">互动率</p>
+                                        <p class="text-lg font-black text-error">15%</p>
+                                    </div>
+                                </div>
+                                <div class="mt-4 bg-surface-container-low p-3 rounded-lg">
+                                    <p class="text-[10px] font-bold text-primary mb-1 uppercase tracking-wider">实时 ASR 摘要</p>
+                                    <p class="text-xs text-on-surface leading-relaxed">“...通过傅里叶变换，我们可以将信号转换到频域中进行分析...”</p>
                                 </div>
                             </div>
                         </div>
@@ -223,10 +202,25 @@
                 <div class="space-y-4">
                     <div class="bg-white p-4 rounded-xl border-l-4 border-error shadow-sm">
                         <div class="flex justify-between text-[10px] text-on-surface-variant mb-2">
-                             <span class="font-bold text-error">敏感词预警</span> <span>14:21</span>
+                             <span class="font-bold text-error">敏感词触发</span> <span>14:21</span>
                         </div>
                         <p class="text-xs font-bold mb-1">《现代史纲》 - 201</p>
-                        <button class="w-full mt-2 py-2 bg-error text-white text-[10px] font-bold rounded-lg">立即核查</button>
+                        <p class="text-[10px] text-on-surface-variant mb-2 italic">“检测到不当政治表述关联词...”</p>
+                        <button class="w-full py-2 bg-error text-white text-[10px] font-bold rounded-lg hover:opacity-90">立即核查</button>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border-l-4 border-warning shadow-sm" style="border-left-color: #f59e0b;">
+                        <div class="flex justify-between text-[10px] text-on-surface-variant mb-2">
+                             <span class="font-bold text-warning" style="color: #f59e0b;">专注度预警</span> <span>14:15</span>
+                        </div>
+                        <p class="text-xs font-bold mb-1">《英语口语》 - 501</p>
+                        <p class="text-[10px] text-on-surface-variant mb-2 italic">“全班 60% 处于低头沉默状态...”</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border-l-4 border-secondary shadow-sm">
+                        <div class="flex justify-between text-[10px] text-on-surface-variant mb-2">
+                             <span class="font-bold text-secondary">异常活跃</span> <span>14:02</span>
+                        </div>
+                        <p class="text-xs font-bold mb-1">《物理实验》 - C 实验室</p>
+                        <p class="text-[10px] text-on-surface-variant mb-2 italic">“环境噪音超过 85dB，可能存在秩序问题...”</p>
                     </div>
                 </div>
             </aside>
