@@ -95,11 +95,27 @@ if not os.path.exists("static"):
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
-async def get():
+async def get_index():
     response = FileResponse("static/index.html")
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     response.headers["Pragma"] = "no-cache"
     return response
+
+@app.get("/dashboard")
+async def get_dashboard():
+    return FileResponse("static/dashboard.html")
+
+@app.get("/assessment")
+async def get_assessment():
+    return FileResponse("static/assessment.html")
+
+@app.get("/management")
+async def get_management():
+    return FileResponse("static/management.html")
+
+@app.get("/login")
+async def get_login():
+    return FileResponse("static/login.html")
 
 # Global state
 active_websockets = set()

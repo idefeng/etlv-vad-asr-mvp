@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Scholarly Observer AI - 教学后评估</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "secondary": "#006a6a",
+                "on-surface-variant": "#424751",
+                "on-surface": "#191c1e",
+                "on-primary": "#ffffff",
+                "background": "#f7f9fb",
+                "primary": "#00346f",
+                "primary-container": "#004a99",
+                "surface-container-low": "#f2f4f6",
+                "surface-container-lowest": "#ffffff"
+              },
+              fontFamily: { "headline": ["Manrope"], "body": ["Inter"], "label": ["Inter"] },
+              borderRadius: { "xl": "0.5rem", "full": "0.75rem" },
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background font-body text-on-surface antialiased">
+    <aside class="h-screen w-64 fixed left-0 top-0 z-40 bg-surface-container-low flex flex-col py-6 px-4">
+        <div class="mb-10 px-4">
+            <h1 class="text-xl font-bold text-primary tracking-tight font-headline">Command Center</h1>
+        </div>
+        <nav class="flex-grow space-y-1">
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant" href="/dashboard"><span class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant" href="/management"><span class="material-symbols-outlined">upload_file</span><span>Pre-class Material</span></a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant" href="/"><span class="material-symbols-outlined">analytics</span><span>In-class Monitor</span></a>
+            <a class="flex items-center gap-3 px-4 py-3 bg-white text-primary font-bold rounded-lg shadow-sm" href="/assessment"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment_turned_in</span><span>Quality Assessment</span></a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant" href="/login"><span class="material-symbols-outlined">account_circle</span><span>Login</span></a>
+        </nav>
+    </aside>
+
+    <main class="ml-64 p-10 mt-16">
+        <h2 class="text-3xl font-extrabold text-on-surface font-headline mb-6">教学后评估报告</h2>
+        <div class="bg-surface-container-lowest p-8 rounded-2xl shadow-sm">
+             <div class="flex items-center gap-4 mb-8">
+                 <div class="w-16 h-16 rounded-full bg-secondary-container/30 flex items-center justify-center text-secondary text-2xl font-bold">92</div>
+                 <div>
+                     <h3 class="text-xl font-bold">高等数学 (下) - 第 12 讲</h3>
+                     <p class="text-sm text-on-surface-variant">评估日期: 2026-03-20 | 授课教师: 张建国</p>
+                 </div>
+             </div>
+             <div class="grid grid-cols-2 gap-8">
+                 <div class="space-y-4">
+                     <h4 class="font-bold border-b pb-2">AI 智能评分维度</h4>
+                     <div class="flex justify-between text-sm"><span>知识点覆盖</span><span class="font-bold">95%</span></div>
+                     <div class="flex justify-between text-sm"><span>教学互动性</span><span class="font-bold">88%</span></div>
+                     <div class="flex justify-between text-sm"><span>情感共鸣度</span><span class="font-bold">90%</span></div>
+                 </div>
+                 <div class="bg-surface-container-low p-5 rounded-xl">
+                     <h4 class="font-bold mb-3">专家系统建议</h4>
+                     <p class="text-sm leading-relaxed">张教授在本堂课中通过生活化的案例很好地解释了微分方程。但在第 35 分钟左右的互动环节点，可以适当增加提问频率以提高后排学生的参与度。</p>
+                 </div>
+             </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Scholarly Observer AI - 教学前管理</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "secondary": "#006a6a",
+                "on-surface-variant": "#424751",
+                "on-surface": "#191c1e",
+                "on-primary": "#ffffff",
+                "background": "#f7f9fb",
+                "primary": "#00346f",
+                "primary-container": "#004a99",
+                "surface-container-low": "#f2f4f6",
+                "surface-container-lowest": "#ffffff"
+              },
+              fontFamily: { "headline": ["Manrope"], "body": ["Inter"], "label": ["Inter"] },
+              borderRadius: { "xl": "0.5rem", "full": "0.75rem" },
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background font-body text-on-surface antialiased">
+    <aside class="h-screen w-64 fixed left-0 top-0 z-40 bg-surface-container-low flex flex-col py-6 px-4">
+        <div class="mb-10 px-4">
+            <h1 class="text-xl font-bold text-primary tracking-tight font-headline">Command Center</h1>
+        </div>
+        <nav class="flex-grow space-y-1">
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant" href="/dashboard"><span class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a>
+            <a class="flex items-center gap-3 px-4 py-3 bg-white text-primary font-bold rounded-lg shadow-sm" href="/management"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">upload_file</span><span>Pre-class Material</span></a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant" href="/"><span class="material-symbols-outlined">analytics</span><span>In-class Monitor</span></a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant" href="/assessment"><span class="material-symbols-outlined">assignment_turned_in</span><span>Quality Assessment</span></a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant" href="/login"><span class="material-symbols-outlined">account_circle</span><span>Login</span></a>
+        </nav>
+    </aside>
+
+    <main class="ml-64 p-10 mt-16">
+        <h2 class="text-3xl font-extrabold text-on-surface font-headline mb-6">教学前管理与材料备课</h2>
+        <div class="grid grid-cols-3 gap-8">
+             <div class="col-span-2 bg-white p-8 rounded-2xl shadow-sm border-dashed border-2 border-outline-variant flex flex-col items-center justify-center py-20">
+                 <span class="material-symbols-outlined text-5xl text-outline-variant mb-4">cloud_upload</span>
+                 <p class="font-bold text-lg mb-1">拖拽 PPT 或教学大纲至此处</p>
+                 <p class="text-xs text-on-surface-variant">支持 PDF, PPTX, DOCX | AI 将自动提取核心知识点</p>
+                 <button class="mt-6 bg-primary text-white px-6 py-2 rounded-xl font-bold">选择文件</button>
+             </div>
+             <div class="bg-surface-container-highest/30 p-6 rounded-2xl h-fit">
+                 <h4 class="font-bold mb-4">今日排课概览</h4>
+                 <div class="space-y-4">
+                     <div class="p-3 bg-white rounded-lg shadow-sm"><p class="text-xs font-bold">08:30 - 高等数学</p><p class="text-[10px] text-on-surface-variant">302 教室 | 已准备</p></div>
+                     <div class="p-3 bg-white rounded-lg shadow-sm"><p class="text-xs font-bold">10:15 - 数字信号处理</p><p class="text-[10px] text-on-surface-variant">线上 B1 | 待上传材料</p></div>
+                 </div>
+             </div>
+        </div>
+    </main>
+</body>
+</html>

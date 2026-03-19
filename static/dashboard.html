@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Scholarly Observer AI - 教学监管驾驶舱</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "secondary": "#006a6a",
+                "inverse-on-surface": "#eff1f3",
+                "on-surface-variant": "#424751",
+                "on-surface": "#191c1e",
+                "on-primary": "#ffffff",
+                "on-tertiary-fixed": "#002204",
+                "on-primary-fixed": "#001b3f",
+                "inverse-surface": "#2d3133",
+                "surface-container-highest": "#e0e3e5",
+                "surface-container-high": "#e6e8ea",
+                "outline-variant": "#c2c6d3",
+                "on-tertiary": "#ffffff",
+                "on-secondary": "#ffffff",
+                "error": "#ba1a1a",
+                "on-secondary-fixed-variant": "#004f4f",
+                "on-tertiary-container": "#7ecf79",
+                "surface-dim": "#d8dadc",
+                "surface-container-low": "#f2f4f6",
+                "inverse-primary": "#abc7ff",
+                "background": "#f7f9fb",
+                "on-secondary-container": "#006e6e",
+                "tertiary-container": "#005914",
+                "outline": "#737783",
+                "surface": "#f7f9fb",
+                "secondary-fixed": "#93f2f2",
+                "on-error": "#ffffff",
+                "primary": "#00346f",
+                "on-primary-fixed-variant": "#00458f",
+                "on-error-container": "#93000a",
+                "on-secondary-fixed": "#002020",
+                "surface-bright": "#f7f9fb",
+                "on-primary-container": "#9bbdff",
+                "tertiary": "#003f0b",
+                "primary-container": "#004a99",
+                "secondary-fixed-dim": "#76d6d5",
+                "secondary-container": "#90efef",
+                "on-tertiary-fixed-variant": "#005312",
+                "primary-fixed-dim": "#abc7ff",
+                "on-background": "#191c1e",
+                "primary-fixed": "#d7e2ff",
+                "tertiary-fixed-dim": "#88d982",
+                "surface-tint": "#255dad",
+                "surface-container": "#eceef0",
+                "surface-variant": "#e0e3e5",
+                "error-container": "#ffdad6",
+                "surface-container-lowest": "#ffffff",
+                "tertiary-fixed": "#a3f69c"
+              },
+              fontFamily: {
+                "headline": ["Manrope"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            },
+          },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-effect { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
+        .asymmetric-grid { display: grid; grid-template-columns: 1fr 340px; gap: 2.25rem; }
+        .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface antialiased">
+    <!-- SideNavBar (Shared) -->
+    <aside class="h-screen w-64 fixed left-0 top-0 z-40 bg-surface-container-low flex flex-col py-6 px-4">
+        <div class="mb-10 px-4">
+            <h1 class="text-xl font-bold text-primary tracking-tight font-headline">Command Center</h1>
+            <p class="text-xs text-on-surface-variant font-medium">AI Monitoring Active</p>
+        </div>
+        <nav class="flex-grow space-y-1">
+            <a class="flex items-center gap-3 px-4 py-3 bg-white text-primary font-bold rounded-lg shadow-sm" href="/dashboard">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+                <span class="font-label">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary-fixed/30" href="/management">
+                <span class="material-symbols-outlined">upload_file</span>
+                <span class="font-label">Pre-class Material</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary-fixed/30" href="/">
+                <span class="material-symbols-outlined">analytics</span>
+                <span class="font-label">In-class Monitor</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary-fixed/30" href="/assessment">
+                <span class="material-symbols-outlined">assignment_turned_in</span>
+                <span class="font-label">Quality Assessment</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary-fixed/30" href="/login">
+                <span class="material-symbols-outlined">account_circle</span>
+                <span class="font-label">Login</span>
+            </a>
+        </nav>
+        <div class="mt-auto border-t border-outline-variant/30 pt-6">
+            <div class="px-4 py-3 bg-primary text-on-primary rounded-xl mb-6 flex items-center justify-center gap-2 cursor-pointer hover:opacity-90">
+                <span class="material-symbols-outlined text-sm">smart_toy</span>
+                <span class="font-bold text-sm">AI Insight Hub</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- TopNavBar (Shared) -->
+    <header class="fixed top-0 right-0 w-[calc(100%-16rem)] z-30 bg-white/80 backdrop-blur-xl border-b border-surface-container-low h-16 px-8 flex justify-between items-center ml-64">
+        <div class="flex items-center gap-8">
+            <span class="text-lg font-black text-primary font-headline tracking-tighter">Scholarly Observer AI</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline text-lg">search</span>
+                <input class="pl-10 pr-4 py-1.5 bg-surface-container-low border-none rounded-full text-sm w-64 focus:ring-2 focus:ring-primary/20" placeholder="查找课堂..." type="text"/>
+            </div>
+            <img class="w-8 h-8 rounded-full border-2 border-primary/10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtu8tSfeYE7LrGTMhMYIiY1ZVOp27l7ZsoUeMO8JiG49uwgqIF23Jw4LKlwd-bTnAsq8qBZBIcgQTu4WzZ4pUiML1dEaWsUq8MgeHlM6-29ImrDBMnGYtEBQY8REAPbaVVZfHL2no6Pkpl8v7mELvz4szLxKtqPFAlEpipOoZXOby5k_Wu7el9RusAH78aeEsrwLvGw_TQHDLjE1mhgIWAlIS-DoNp89x_7F0wyKdli1hj_9nLH2efU6ybZ77mvcWdPon8KyD7jkg"/>
+        </div>
+    </header>
+
+    <!-- Main Content Canvas -->
+    <main class="ml-64 mt-16 p-10 min-h-screen">
+        <div class="mb-10">
+            <h2 class="text-3xl font-extrabold text-on-surface font-headline tracking-tight">教学监管驾驶舱</h2>
+            <div class="flex items-center gap-2 mt-2">
+                <span class="flex h-2 w-2 rounded-full bg-secondary"></span>
+                <p class="text-on-surface-variant font-medium text-sm">当前全校范围内 AI 实时监测中 • 12 间异常课堂需关注</p>
+            </div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="bento-grid mb-10">
+            <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border-b-2 border-transparent hover:border-primary transition-all">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-2 bg-blue-50 text-primary rounded-lg">
+                        <span class="material-symbols-outlined">school</span>
+                    </div>
+                    <span class="text-secondary text-xs font-bold">+12% vs yesterday</span>
+                </div>
+                <p class="text-on-surface-variant text-sm font-medium">实时开课数</p>
+                <h3 class="text-3xl font-extrabold text-on-surface font-headline mt-1">1,248</h3>
+            </div>
+            <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border-b-2 border-transparent hover:border-error transition-all">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-2 bg-red-50 text-error rounded-lg">
+                        <span class="material-symbols-outlined">warning</span>
+                    </div>
+                    <span class="text-error text-xs font-bold">高风险介入</span>
+                </div>
+                <p class="text-on-surface-variant text-sm font-medium">累计预警数</p>
+                <h3 class="text-3xl font-extrabold text-on-surface font-headline mt-1">42</h3>
+            </div>
+            <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border-b-2 border-transparent hover:border-secondary transition-all">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-2 bg-teal-50 text-secondary rounded-lg">
+                        <span class="material-symbols-outlined">group</span>
+                    </div>
+                    <span class="text-on-surface-variant text-xs font-medium">Top 3 异常</span>
+                </div>
+                <p class="text-on-surface-variant text-sm font-medium">异常活跃班级</p>
+                <h3 class="text-3xl font-extrabold text-on-surface font-headline mt-1">18</h3>
+            </div>
+            <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border-b-2 border-transparent hover:border-primary transition-all">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-2 bg-blue-50 text-primary rounded-lg">
+                        <span class="material-symbols-outlined">verified</span>
+                    </div>
+                    <span class="text-primary text-xs font-bold">优秀率 94%</span>
+                </div>
+                <p class="text-on-surface-variant text-sm font-medium">平均教学质量指数</p>
+                <h3 class="text-3xl font-extrabold text-on-surface font-headline mt-1">92.4</h3>
+            </div>
+        </div>
+
+        <!-- Dashboard Layout -->
+        <div class="asymmetric-grid">
+            <div class="space-y-10">
+                <section>
+                    <div class="flex justify-between items-end mb-6">
+                        <h4 class="text-xl font-bold font-headline">活跃课堂实时监控</h4>
+                        <button class="text-primary font-bold text-sm hover:underline">查看全部 →</button>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="bg-surface-container-lowest rounded-xl p-5 flex gap-6 items-center shadow-sm">
+                            <div class="w-48 h-28 rounded-lg overflow-hidden relative bg-black shrink-0">
+                                <img class="w-full h-full object-cover opacity-80" src="/static/live.jpg">
+                                <div class="absolute top-2 left-2 px-2 py-0.5 bg-error text-white text-[10px] font-bold rounded flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> LIVE
+                                </div>
+                            </div>
+                            <div class="flex-grow">
+                                <h5 class="font-bold text-lg">高等数学 (下) - 微分方程</h5>
+                                <p class="text-on-surface-variant text-xs">张建国 教授 | 3号教学楼 302</p>
+                                <div class="mt-4 flex gap-4">
+                                    <div class="flex-1 bg-surface-container-low p-3 rounded-lg">
+                                        <p class="text-[10px] font-bold text-primary mb-1 uppercase tracking-wider">ASR 实时摘要</p>
+                                        <p class="text-xs text-on-surface leading-relaxed">“...关于通解和特解的转化关系，同学们注意这个常数项...”</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Alerts -->
+            <aside class="bg-surface-container-highest/50 rounded-2xl p-6 h-fit">
+                <div class="flex items-center gap-2 mb-6">
+                    <span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">campaign</span>
+                    <h4 class="text-lg font-bold font-headline">实时预警流</h4>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-white p-4 rounded-xl border-l-4 border-error shadow-sm">
+                        <div class="flex justify-between text-[10px] text-on-surface-variant mb-2">
+                             <span class="font-bold text-error">敏感词预警</span> <span>14:21</span>
+                        </div>
+                        <p class="text-xs font-bold mb-1">《现代史纲》 - 201</p>
+                        <button class="w-full mt-2 py-2 bg-error text-white text-[10px] font-bold rounded-lg">立即核查</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+</body>
+</html>
