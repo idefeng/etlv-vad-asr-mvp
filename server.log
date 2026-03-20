@@ -306,3 +306,82 @@ INFO:     127.0.0.1:52764 - "GET /static/live.jpg?t=1773947197021 HTTP/1.1" 200 
 INFO:     127.0.0.1:52764 - "GET /static/live.jpg?t=1773947197121 HTTP/1.1" 200 OK
 INFO:     127.0.0.1:52764 - "GET /login HTTP/1.1" 200 OK
 INFO:     connection closed
+[WS] Error: Cannot call "receive" once a disconnect message has been received.
+INFO:     127.0.0.1:53001 - "GET / HTTP/1.1" 200 OK
+INFO:     connection closed
+[WS] Error: Cannot call "receive" once a disconnect message has been received.
+INFO:     127.0.0.1:53002 - "GET /management HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53002 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53002 - "GET /monitoring HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53070 - "WebSocket /ws" [accepted]
+INFO:     connection open
+[WS] Client connected. Active: 1
+INFO:     127.0.0.1:53002 - "GET /static/live.jpg?t=1773947357124 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53002 - "GET /static/live.jpg?t=1773947357224 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53002 - "GET /static/live.jpg?t=1773947357325 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53002 - "GET /static/live.jpg?t=1773947357423 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53002 - "GET /static/live.jpg?t=1773947357525 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53002 - "GET /static/live.jpg?t=1773947357624 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53002 - "GET /static/live.jpg?t=1773947357725 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53002 - "GET /static/live.jpg?t=1773947357825 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53002 - "GET /static/live.jpg?t=1773947357928 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53002 - "GET /assessment HTTP/1.1" 200 OK
+INFO:     connection closed
+[WS] Error: Cannot call "receive" once a disconnect message has been received.
+INFO:     127.0.0.1:53002 - "GET /login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /management HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /monitoring HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53155 - "WebSocket /ws" [accepted]
+INFO:     connection open
+[WS] Client connected. Active: 1
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947404684 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947404784 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947404887 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947404984 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947405085 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947405188 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947405288 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947405385 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947405484 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947405585 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947405684 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947405785 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /assessment HTTP/1.1" 200 OK
+INFO:     connection closed
+[WS] Error: Cannot call "receive" once a disconnect message has been received.
+INFO:     127.0.0.1:53068 - "GET /monitoring HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53159 - "WebSocket /ws" [accepted]
+INFO:     connection open
+[WS] Client connected. Active: 1
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947406810 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947406909 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947407010 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947407110 HTTP/1.1" 200 OK
+INFO:     connection closed
+[WS] Error: Cannot call "receive" once a disconnect message has been received.
+INFO:     127.0.0.1:53068 - "GET /static/live.jpg?t=1773947407210 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53469 - "GET /management HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53469 - "GET /monitoring HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53472 - "WebSocket /ws" [accepted]
+INFO:     connection open
+[WS] Client connected. Active: 1
+INFO:     127.0.0.1:53469 - "GET /static/live.jpg?t=1773947621907 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53469 - "GET /static/live.jpg?t=1773947622008 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53469 - "GET /static/live.jpg?t=1773947622112 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53469 - "GET /static/live.jpg?t=1773947622208 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53469 - "GET /static/live.jpg?t=1773947622309 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53469 - "GET /static/live.jpg?t=1773947622408 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53469 - "GET /static/live.jpg?t=1773947622508 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53469 - "GET /static/live.jpg?t=1773947622607 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53469 - "GET /static/live.jpg?t=1773947622712 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53469 - "GET /static/live.jpg?t=1773947622808 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53469 - "GET /assessment HTTP/1.1" 200 OK
+INFO:     connection closed
+[WS] Error: Cannot call "receive" once a disconnect message has been received.
+INFO:     127.0.0.1:53469 - "GET /login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53476 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53012 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53012 - "GET /static/live.jpg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53012 - "GET /management HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53016 - "GET /management HTTP/1.1" 200 OK

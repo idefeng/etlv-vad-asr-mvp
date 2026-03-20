@@ -19,13 +19,24 @@
                 "background": "#f7f9fb",
                 "primary": "#00346f",
                 "surface-container-low": "#f2f4f6",
-                "surface-container-lowest": "#ffffff"
+                "surface-container-lowest": "#ffffff",
+                "warning": "#f59e0b",
+                "error": "#ba1a1a",
+                "success": "#2e7d32"
               },
               fontFamily: { "headline": ["Manrope"], "body": ["Inter"] },
             },
           },
         }
     </script>
+    <style>
+        .drawer-blur { backdrop-filter: blur(16px); background: rgba(255, 255, 255, 0.85); }
+        .pulse-orange { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+        .knowledge-line { position: relative; padding-left: 20px; }
+        .knowledge-line::before { content: ''; position: absolute; left: 0; top: 12px; width: 12px; height: 1px; background: #cbd5e1; }
+        .knowledge-tree-border { border-left: 1px solid #cbd5e1; margin-left: 6px; }
+    </style>
 </head>
 <body class="bg-background font-body text-on-surface antialiased">
     <aside class="h-screen w-64 fixed left-0 top-0 z-40 bg-surface-container-low flex flex-col py-6 px-4">
@@ -51,26 +62,61 @@
                      <p class="text-xs text-on-surface-variant">AI 将自动为您生成知识图谱、关联案例及 10+ 互动提问建议</p>
                      <button class="mt-6 bg-primary text-white px-8 py-3 rounded-xl font-bold hover:scale-105 transition-transform">选择本地文件</button>
                  </div>
-                 
                  <div class="bg-white p-6 rounded-2xl shadow-sm">
-                     <h4 class="font-bold mb-4">已上架教学材料 (Mock)</h4>
-                     <div class="space-y-3">
-                         <div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl">
-                             <div class="flex items-center gap-4">
-                                 <span class="material-symbols-outlined text-primary">description</span>
-                                 <div><p class="text-sm font-bold">高等数学_12讲_微分方程.pptx</p><p class="text-[10px] text-on-surface-variant">上传于 2小时前 | AI 知识点解析已完成</p></div>
-                             </div>
-                             <button class="text-primary text-xs font-bold">查看解析报告</button>
-                         </div>
-                         <div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl">
-                             <div class="flex items-center gap-4">
-                                 <span class="material-symbols-outlined text-primary">description</span>
-                                 <div><p class="text-sm font-bold">数字信号处理_实验大纲.pdf</p><p class="text-[10px] text-on-surface-variant">上传于 昨日 | 检测到 15 处跨学科关联点</p></div>
-                             </div>
-                             <button class="text-primary text-xs font-bold">查看解析报告</button>
-                         </div>
-                     </div>
-                 </div>
+                      <div class="flex justify-between items-center mb-6">
+                           <h4 class="font-bold">备课材料库</h4>
+                           <div class="flex gap-2">
+                               <span class="px-3 py-1 bg-success/10 text-success text-[10px] font-bold rounded-full">已通过: 2</span>
+                               <span class="px-3 py-1 bg-warning/10 text-warning text-[10px] font-bold rounded-full">检测中: 1</span>
+                           </div>
+                      </div>
+                      <div class="space-y-4">
+                          <!-- Status: Success -->
+                          <div class="group flex items-center justify-between p-4 bg-surface-container-low rounded-2xl hover:bg-white hover:shadow-md transition-all border border-transparent hover:border-success/20">
+                              <div class="flex items-center gap-4">
+                                  <div class="p-3 bg-success/10 text-success rounded-xl"><span class="material-symbols-outlined">verified_user</span></div>
+                                  <div>
+                                      <p class="text-sm font-bold">高等数学_12讲_微分方程.pptx</p>
+                                      <div class="flex items-center gap-2 mt-1">
+                                          <span class="px-2 py-0.5 bg-success text-white text-[9px] font-bold rounded">敏感词通过</span>
+                                          <p class="text-[10px] text-on-surface-variant">AI 知识大纲解析已就绪</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:opacity-90 transition-opacity" onclick="toggleDrawer('mat1')">查看解析大纲</button>
+                          </div>
+
+                          <!-- Status: Processing -->
+                          <div class="flex items-center justify-between p-4 bg-surface-container-low rounded-2xl opacity-75 border-dashed border border-warning/30">
+                              <div class="flex items-center gap-4">
+                                  <div class="p-3 bg-warning/10 text-warning rounded-xl pulse-orange"><span class="material-symbols-outlined">security</span></div>
+                                  <div>
+                                      <p class="text-sm font-bold">线性代数_矩阵运算.pdf</p>
+                                      <div class="flex items-center gap-2 mt-1">
+                                          <span class="flex h-1.5 w-1.5 bg-warning rounded-full animate-ping"></span>
+                                          <p class="text-[10px] text-warning font-bold">敏感词深度扫描中 (64%)...</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <button class="px-4 py-2 bg-slate-200 text-slate-500 text-xs font-bold rounded-lg cursor-not-allowed">等待解析</button>
+                          </div>
+
+                          <!-- Status: Blocked -->
+                          <div class="flex items-center justify-between p-4 bg-red-50/50 rounded-2xl border border-error/10">
+                              <div class="flex items-center gap-4">
+                                  <div class="p-3 bg-error/10 text-error rounded-xl"><span class="material-symbols-outlined">report</span></div>
+                                  <div>
+                                      <p class="text-sm font-bold">国际政治形势分析_内部参考.docx</p>
+                                      <div class="flex items-center gap-2 mt-1">
+                                          <span class="px-2 py-0.5 bg-error text-white text-[9px] font-bold rounded">锁定并拦截</span>
+                                          <p class="text-[10px] text-error font-medium">检测到 2 处违禁政治表述，已禁止同步至终端</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <button class="px-4 py-2 bg-error/10 text-error text-xs font-bold rounded-lg hover:bg-error/20 transition-all">修改材料</button>
+                          </div>
+                      </div>
+                  </div>
              </div>
 
              <div class="bg-surface-container-highest/30 p-6 rounded-2xl h-fit">
@@ -88,5 +134,87 @@
              </div>
         </div>
     </main>
+
+    <!-- Detail Drawer (Knowledge Outline) -->
+    <div id="detailDrawer" class="fixed inset-y-0 right-0 w-[500px] z-50 transform translate-x-full transition-transform duration-500 ease-in-out">
+        <div class="h-full drawer-blur shadow-2xl border-l border-white/20 flex flex-col">
+            <!-- Header -->
+            <div class="p-6 border-b border-outline-variant/20 flex justify-between items-center bg-primary/5">
+                <div>
+                    <h5 class="text-xl font-bold font-headline text-primary">AI 材料解析报告</h5>
+                    <p class="text-xs text-on-surface-variant mt-1">文件：高等数学_12讲_微分方程.pptx</p>
+                </div>
+                <button onclick="toggleDrawer()" class="p-2 hover:bg-black/5 rounded-full transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <!-- Content -->
+            <div class="flex-1 overflow-y-auto p-8 space-y-10 custom-scrollbar">
+                <!-- Section 1: Knowledge Outline -->
+                <section>
+                    <div class="flex items-center gap-2 mb-6 text-primary">
+                        <span class="material-symbols-outlined">account_tree</span>
+                        <h6 class="font-bold text-lg">生成的知识大纲</h6>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="font-bold text-sm text-on-surface border-b border-primary/10 pb-2">第一章：微分方程基础</div>
+                        <div class="knowledge-tree-border space-y-3">
+                            <div class="knowledge-line text-sm text-on-surface flex items-start gap-2">
+                                <span class="bg-primary/10 text-primary text-[10px] font-bold px-1.5 rounded mt-1">1.1</span>
+                                <span>微分方程的定义与阶数</span>
+                            </div>
+                            <div class="knowledge-tree-border ml-8 space-y-2">
+                                <div class="knowledge-line text-xs text-on-surface-variant italic">掌握常微分方程与偏微分方程的区别</div>
+                                <div class="knowledge-line text-xs text-on-surface-variant italic">阶数的判定方法（最高导数原则）</div>
+                            </div>
+                            <div class="knowledge-line text-sm text-on-surface flex items-start gap-2">
+                                <span class="bg-primary/10 text-primary text-[10px] font-bold px-1.5 rounded mt-1">1.2</span>
+                                <span>微分方程的解、通解与特解</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 2: Key Knowledge Points -->
+                <section>
+                    <div class="flex items-center gap-2 mb-6 text-secondary">
+                        <span class="material-symbols-outlined">psychology_alt</span>
+                        <h6 class="font-bold text-lg">核心知识点提取</h6>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="p-4 bg-white/60 rounded-xl border border-secondary/10 hover:border-secondary/30 transition-all shadow-sm">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                <span class="text-xs font-bold text-secondary uppercase">核心逻辑</span>
+                            </div>
+                            <p class="text-sm font-bold text-on-surface">变量可分离方程</p>
+                            <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">通过分离变量后两端积分求通解，注意常数项 C 的位置。</p>
+                        </div>
+                        <div class="p-4 bg-white/60 rounded-xl border border-secondary/10 hover:border-secondary/30 transition-all shadow-sm">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                <span class="text-xs font-bold text-secondary uppercase">重点公式</span>
+                            </div>
+                            <p class="text-sm font-bold text-on-surface">一阶线性齐次方程通解</p>
+                            <p class="text-[11px] font-mono bg-black/5 p-2 rounded mt-1 text-on-surface-variant italic">y = Ce^∫-P(x)dx</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Footer -->
+            <div class="p-6 border-t border-outline-variant/20 bg-white/50">
+                <button class="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">同步至学生端教学日历</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDrawer(id) {
+            const drawer = document.getElementById('detailDrawer');
+            drawer.classList.toggle('translate-x-full');
+        }
+    </script>
 </body>
 </html>
