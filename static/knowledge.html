@@ -92,34 +92,37 @@
             </div>
         </header>
 
-        <!-- Multi-level Filter Area -->
+        <!-- Multi-level Filter Area (Institutional & Classroom) -->
         <div class="px-10 py-6 bg-white border-b border-slate-200 shadow-sm space-y-4 z-20">
-            <!-- Row 1: Resource Type -->
+            <!-- Row 1: Institution -->
             <div class="flex items-start gap-4">
-                <span class="text-xs font-bold text-on-surface-variant w-20 pt-1.5">资源类型</span>
+                <span class="text-xs font-bold text-on-surface-variant w-24 pt-1.5">机构部门</span>
                 <div class="flex flex-wrap gap-2">
-                    <button onclick="showTab('materials')" id="tab-materials" class="tab-active filter-tag px-4 py-1.5 rounded-lg text-xs font-bold transition-all">原始教材资料</button>
-                    <button onclick="showTab('outline')" id="tab-outline" class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">AI 大纲/知识点</button>
-                    <button onclick="showTab('quiz')" id="tab-quiz" class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">智能题库</button>
+                    <button class="filter-tag active px-4 py-1.5 rounded-lg text-xs font-bold bg-primary text-white shadow-sm transition-all">全部</button>
+                    <button class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">理学院</button>
+                    <button class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">工学院</button>
+                    <button class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">信息学院</button>
+                    <button class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">人工智能研究院</button>
                 </div>
             </div>
-            <!-- Row 2: Major Courses -->
+            <!-- Row 2: Classroom / Project Name -->
             <div class="flex items-start gap-4">
-                <span class="text-xs font-bold text-on-surface-variant w-20 pt-1.5">主修课程</span>
+                <span class="text-xs font-bold text-on-surface-variant w-24 pt-1.5">课堂 / 项目名称</span>
                 <div class="flex flex-wrap gap-2">
                     <button class="filter-tag active px-4 py-1.5 rounded-lg text-xs font-bold bg-primary text-white shadow-sm transition-all">全部</button>
                     <button class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">高等数学 (下)</button>
                     <button class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">线性代数</button>
                     <button class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">大学物理</button>
+                    <button class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">数字信号处理</button>
                 </div>
             </div>
-            <!-- Row 3: Elective Courses -->
+            <!-- Row 3: Resource Type -->
             <div class="flex items-start gap-4">
-                <span class="text-xs font-bold text-on-surface-variant w-20 pt-1.5">实验与选修</span>
+                <span class="text-xs font-bold text-on-surface-variant w-24 pt-1.5">资源类型</span>
                 <div class="flex flex-wrap gap-2">
-                    <button class="filter-tag active px-4 py-1.5 rounded-lg text-xs font-bold bg-primary text-white shadow-sm transition-all">全部</button>
-                    <button class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">数字信号处理</button>
-                    <button class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">大学英语口语</button>
+                    <button onclick="showTab('materials')" id="tab-materials" class="tab-active filter-tag px-4 py-1.5 rounded-lg text-xs font-bold transition-all">原始材料/资料</button>
+                    <button onclick="showTab('outline')" id="tab-outline" class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">AI 大纲/知识点</button>
+                    <button onclick="showTab('quiz')" id="tab-quiz" class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">智能题库</button>
                 </div>
             </div>
         </div>
