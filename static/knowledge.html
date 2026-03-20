@@ -29,10 +29,10 @@
     </script>
     <style>
         .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.3); }
-        .course-item.active { background: #00346f; color: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 52, 111, 0.2); }
-        .tab-active { color: #00346f; border-bottom: 3px solid #00346f; }
         .knowledge-tree-border { border-left: 2px solid rgba(0, 52, 111, 0.1); margin-left: 12px; padding-left: 20px; }
         .icon-svg { width: 20px; height: 20px; fill: currentColor; display: inline-block; vertical-align: middle; }
+        .filter-tag.active { background-color: #00346f !important; color: white !important; font-weight: bold !important; box-shadow: 0 2px 8px rgba(0, 52, 111, 0.2); }
+        .tab-active { background-color: #00346f !important; color: white !important; font-weight: bold !important; box-shadow: 0 2px 8px rgba(0, 52, 111, 0.2); }
     </style>
 </head>
 <body class="bg-background font-body text-on-surface antialiased overflow-hidden h-screen">
@@ -92,61 +92,41 @@
             </div>
         </header>
 
-        <!-- Two Column Layout (Center Content) -->
-        <div class="flex-grow flex overflow-hidden">
-            <!-- Left Sidebar: Course List -->
-            <aside class="w-72 bg-white border-r border-slate-200 overflow-y-auto p-6 space-y-6">
-                <div>
-                    <h4 class="text-[10px] font-black uppercase text-on-surface-variant tracking-widest mb-4">主修课程</h4>
-                    <div class="space-y-1">
-                        <button class="course-item active w-full text-left px-4 py-3 flex items-center gap-2">
-                            <svg class="icon-svg" style="width: 20px; height: 20px;" viewBox="0 0 24 24"><path d="M18 4H6v2l6.5 6L6 18v2h12v-3h-7l5-5-5-5h7z"/></svg>
-                            <span class="text-sm font-bold">高等数学 (下)</span>
-                        </button>
-                        <button class="course-item w-full text-left px-4 py-3 flex items-center gap-2 hover:bg-slate-50 transition-all">
-                            <svg class="icon-svg" style="width: 20px; height: 20px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
-                            <span class="text-sm font-medium text-slate-700">线性代数</span>
-                        </button>
-                        <button class="course-item w-full text-left px-4 py-3 flex items-center gap-2 hover:bg-slate-50 transition-all text-on-surface-variant">
-                            <svg class="icon-svg" style="width: 20px; height: 20px;" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
-                            <span class="text-sm font-medium">大学物理</span>
-                        </button>
-                    </div>
+        <!-- Multi-level Filter Area -->
+        <div class="px-10 py-6 bg-white border-b border-slate-200 shadow-sm space-y-4 z-20">
+            <!-- Row 1: Resource Type -->
+            <div class="flex items-start gap-4">
+                <span class="text-xs font-bold text-on-surface-variant w-20 pt-1.5">资源类型</span>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="showTab('materials')" id="tab-materials" class="tab-active filter-tag px-4 py-1.5 rounded-lg text-xs font-bold transition-all">原始教材资料</button>
+                    <button onclick="showTab('outline')" id="tab-outline" class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">AI 大纲/知识点</button>
+                    <button onclick="showTab('quiz')" id="tab-quiz" class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">智能题库</button>
                 </div>
-                <div>
-                    <h4 class="text-[10px] font-black uppercase text-on-surface-variant tracking-widest mb-4">实验与选修</h4>
-                    <div class="space-y-1">
-                        <button class="course-item w-full text-left px-4 py-3 flex items-center gap-2 hover:bg-slate-50 transition-all text-on-surface-variant">
-                            <svg class="icon-svg" style="width: 20px; height: 20px;" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
-                            <span class="text-sm font-medium">数字信号处理</span>
-                        </button>
-                        <button class="course-item w-full text-left px-4 py-3 flex items-center gap-2 hover:bg-slate-50 transition-all text-on-surface-variant">
-                            <svg class="icon-svg" style="width: 20px; height: 20px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
-                            <span class="text-sm font-medium">大学英语口语</span>
-                        </button>
-                    </div>
+            </div>
+            <!-- Row 2: Major Courses -->
+            <div class="flex items-start gap-4">
+                <span class="text-xs font-bold text-on-surface-variant w-20 pt-1.5">主修课程</span>
+                <div class="flex flex-wrap gap-2">
+                    <button class="filter-tag active px-4 py-1.5 rounded-lg text-xs font-bold bg-primary text-white shadow-sm transition-all">全部</button>
+                    <button class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">高等数学 (下)</button>
+                    <button class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">线性代数</button>
+                    <button class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">大学物理</button>
                 </div>
-            </aside>
+            </div>
+            <!-- Row 3: Elective Courses -->
+            <div class="flex items-start gap-4">
+                <span class="text-xs font-bold text-on-surface-variant w-20 pt-1.5">实验与选修</span>
+                <div class="flex flex-wrap gap-2">
+                    <button class="filter-tag active px-4 py-1.5 rounded-lg text-xs font-bold bg-primary text-white shadow-sm transition-all">全部</button>
+                    <button class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">数字信号处理</button>
+                    <button class="filter-tag px-4 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:bg-slate-100 transition-all">大学英语口语</button>
+                </div>
+            </div>
+        </div>
 
-            <!-- Right Area: Content Explorer -->
+        <div class="flex-grow flex overflow-hidden">
+            <!-- Right Area: Content Explorer (Now Full Width) -->
             <section class="flex-grow flex flex-col bg-slate-50 overflow-hidden">
-                <!-- Content Tabs -->
-                <div class="px-10 bg-white border-b border-slate-200 shadow-sm">
-                    <div class="flex gap-8">
-                        <button onclick="showTab('materials')" id="tab-materials" class="tab-active py-5 px-1 text-sm font-bold flex items-center gap-2 transition-all">
-                            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
-                            原始教材资料
-                        </button>
-                        <button onclick="showTab('outline')" id="tab-outline" class="py-5 px-1 text-sm font-medium text-on-surface-variant hover:text-primary flex items-center gap-2 transition-all">
-                            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5.5L9 4l-2.5 5.5L1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15z"/></svg>
-                            AI 大纲/知识点
-                        </button>
-                        <button onclick="showTab('quiz')" id="tab-quiz" class="py-5 px-1 text-sm font-medium text-on-surface-variant hover:text-primary flex items-center gap-2 transition-all">
-                            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v2h4v-2zm0-4h-4v2h4V7zm-7 8V5h2v10h-2z"/></svg>
-                            智能题库
-                        </button>
-                    </div>
-                </div>
 
                 <!-- Tab Content Area (Scrollable) -->
                 <div class="flex-grow overflow-y-auto p-10 space-y-8 custom-scrollbar">
@@ -282,20 +262,52 @@
             // Hide all content
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             
-            // Remove active style from all tabs
-            document.querySelectorAll('[id^="tab-"]').forEach(el => {
-                el.classList.remove('tab-active', 'font-bold');
+            // Remove active style from all resource type buttons
+            const resourceButtons = document.querySelectorAll('[id^="tab-"]');
+            resourceButtons.forEach(el => {
+                el.classList.remove('tab-active', 'font-bold', 'bg-primary', 'text-white');
                 el.classList.add('text-on-surface-variant', 'font-medium');
+                el.classList.remove('active'); // fallback
             });
 
             // Show selected content
             document.getElementById(tabName + 'View').classList.remove('hidden');
             
-            // Activate selected tab
+            // Activate selected tab button
             const activeTab = document.getElementById('tab-' + tabName);
             activeTab.classList.add('tab-active', 'font-bold');
             activeTab.classList.remove('text-on-surface-variant', 'font-medium');
+
+            // Update header title based on course selection (mock)
+            const activeCourse = document.querySelector('.filter-tag.active:not([id^="tab-"])')?.innerText || '全部课程';
+            const tabTitles = {
+                'materials': '原始备课材料',
+                'outline': 'AI 自动生成的授课大纲',
+                'quiz': '智能题库'
+            };
+            document.querySelector('#materialsView h5').innerText = `高等数学 (下) - ${tabTitles[tabName]}`;
         }
+
+        // Handle course filter selection
+        document.querySelectorAll('.filter-tag').forEach(button => {
+            if (button.id.startsWith('tab-')) return; // handled by showTab
+
+            button.addEventListener('click', function() {
+                // Find siblings in the same row
+                const parent = this.parentElement;
+                parent.querySelectorAll('.filter-tag').forEach(btn => {
+                    btn.classList.remove('active', 'bg-primary', 'text-white', 'font-bold');
+                    btn.classList.add('text-on-surface-variant', 'font-medium');
+                });
+
+                // Activate this button
+                this.classList.add('active', 'bg-primary', 'text-white', 'font-bold');
+                this.classList.remove('text-on-surface-variant', 'font-medium');
+                
+                // Trigger content update (mock)
+                console.log('Filtering by:', this.innerText);
+            });
+        });
     </script>
 </body>
 </html>
