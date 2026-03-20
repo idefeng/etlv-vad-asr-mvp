@@ -18,3 +18,5 @@ INFO:     127.0.0.1:56241 - "GET / HTTP/1.1" 200 OK
 INFO:     127.0.0.1:56243 - "GET /knowledge HTTP/1.1" 200 OK
 INFO:     127.0.0.1:56622 - "GET /assessment HTTP/1.1" 200 OK
 INFO:     127.0.0.1:56624 - "GET /knowledge HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57361 - "GET /management HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57361 - "GET /knowledge HTTP/1.1" 200 OK
