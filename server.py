@@ -117,6 +117,10 @@ async def get_assessment():
 async def get_classrooms():
     return FileResponse("static/classrooms.html")
 
+@app.get("/knowledge")
+async def get_knowledge():
+    return FileResponse("static/knowledge.html")
+
 @app.get("/management")
 async def get_management():
     return FileResponse("static/management.html")

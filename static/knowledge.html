@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Scholarly Observer AI - 智能知识库</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                "secondary": "#006a6a",
+                "on-surface-variant": "#424751",
+                "on-surface": "#191c1e",
+                "on-primary": "#ffffff",
+                "background": "#f7f9fb",
+                "primary": "#00346f",
+                "surface-container-low": "#f2f4f6",
+                "surface-container-lowest": "#ffffff",
+                "outline-variant": "#c2c7cf",
+                "quiz-gold": "#ea9d00"
+              },
+              fontFamily: { "headline": ["Manrope"], "body": ["Inter"] },
+            },
+          },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .course-item.active { background: #00346f; color: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 52, 111, 0.2); }
+        .tab-active { color: #00346f; border-bottom: 3px solid #00346f; }
+        .knowledge-tree-border { border-left: 2px solid rgba(0, 52, 111, 0.1); margin-left: 12px; padding-left: 20px; }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface antialiased overflow-hidden h-screen">
+    <!-- SideNavBar (Shared) -->
+    <aside class="h-screen w-64 fixed left-0 top-0 z-40 bg-surface-container-low flex flex-col py-6 px-4">
+        <div class="mb-10 px-4">
+            <h1 class="text-xl font-bold text-primary tracking-tight font-headline">监控指挥中心</h1>
+            <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mt-1">Global Knowledge Hub</p>
+        </div>
+        <nav class="flex-grow space-y-1">
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-white/50 rounded-lg transition-all" href="/">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-medium">监控看板</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-white/50 rounded-lg transition-all" href="/classrooms">
+                <span class="material-symbols-outlined">class</span>
+                <span class="font-medium">全部课堂</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-white/50 rounded-lg transition-all" href="/management">
+                <span class="material-symbols-outlined">upload_file</span>
+                <span class="font-medium">课前备课</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 bg-white text-primary font-bold rounded-lg shadow-sm" href="/knowledge">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">cloud_done</span>
+                <span class="font-medium">智能知识库</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-white/50 rounded-lg transition-all" href="/monitoring">
+                <span class="material-symbols-outlined">analytics</span>
+                <span class="font-medium">课堂实时监控</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-white/50 rounded-lg transition-all" href="/assessment">
+                <span class="material-symbols-outlined">assignment_turned_in</span>
+                <span class="font-medium">教学质量评估</span>
+            </a>
+        </nav>
+        <div class="mt-auto pt-6 border-t border-outline-variant/30">
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-white/50 rounded-lg" href="/login">
+                <span class="material-symbols-outlined">account_circle</span>
+                <span class="font-medium">系统登录</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content Layout (Flex Column) -->
+    <main class="ml-64 flex flex-col h-full bg-slate-50">
+        <!-- Dashboard Header (Fixed Top) -->
+        <header class="h-20 flex items-center justify-between px-10 glass-panel z-30">
+            <h2 class="text-2xl font-extrabold text-on-surface font-headline tracking-tighter">智能知识聚合中心</h2>
+            <div class="flex items-center gap-4">
+                <div class="relative w-64">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-sm text-on-surface-variant">search</span>
+                    <input type="text" placeholder="全局检索知识点..." class="w-full pl-9 pr-4 py-2 bg-white/50 border-none rounded-xl text-xs focus:ring-1 focus:ring-primary/20">
+                </div>
+                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined">notifications</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Two Column Layout (Center Content) -->
+        <div class="flex-grow flex overflow-hidden">
+            <!-- Left Sidebar: Course List -->
+            <aside class="w-72 bg-white border-r border-slate-200 overflow-y-auto p-6 space-y-6">
+                <div>
+                    <h4 class="text-[10px] font-black uppercase text-on-surface-variant tracking-widest mb-4">主修课程</h4>
+                    <div class="space-y-1">
+                        <button class="course-item active w-full text-left px-4 py-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-lg">functions</span>
+                            <span class="text-sm font-bold">高等数学 (下)</span>
+                        </button>
+                        <button class="course-item w-full text-left px-4 py-3 flex items-center gap-2 hover:bg-slate-50 transition-all">
+                            <span class="material-symbols-outlined text-lg">account_circle</span>
+                            <span class="text-sm font-medium">线性代数</span>
+                        </button>
+                        <button class="course-item w-full text-left px-4 py-3 flex items-center gap-2 hover:bg-slate-50 transition-all text-on-surface-variant">
+                            <span class="material-symbols-outlined text-lg">science</span>
+                            <span class="text-sm font-medium">大学物理</span>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-[10px] font-black uppercase text-on-surface-variant tracking-widest mb-4">实验与选修</h4>
+                    <div class="space-y-1">
+                        <button class="course-item w-full text-left px-4 py-3 flex items-center gap-2 hover:bg-slate-50 transition-all text-on-surface-variant">
+                            <span class="material-symbols-outlined text-lg">memory</span>
+                            <span class="text-sm font-medium">数字信号处理</span>
+                        </button>
+                        <button class="course-item w-full text-left px-4 py-3 flex items-center gap-2 hover:bg-slate-50 transition-all text-on-surface-variant">
+                            <span class="material-symbols-outlined text-lg">translate</span>
+                            <span class="text-sm font-medium">大学英语口语</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Right Area: Content Explorer -->
+            <section class="flex-grow flex flex-col bg-slate-50 overflow-hidden">
+                <!-- Content Tabs -->
+                <div class="px-10 bg-white border-b border-slate-200 shadow-sm">
+                    <div class="flex gap-8">
+                        <button onclick="showTab('materials')" id="tab-materials" class="tab-active py-5 px-1 text-sm font-bold flex items-center gap-2 transition-all">
+                            <span class="material-symbols-outlined text-lg">folder</span> 原始教材资料
+                        </button>
+                        <button onclick="showTab('outline')" id="tab-outline" class="py-5 px-1 text-sm font-medium text-on-surface-variant hover:text-primary flex items-center gap-2 transition-all">
+                            <span class="material-symbols-outlined text-lg">auto_awesome</span> AI 大纲/知识点
+                        </button>
+                        <button onclick="showTab('quiz')" id="tab-quiz" class="py-5 px-1 text-sm font-medium text-on-surface-variant hover:text-primary flex items-center gap-2 transition-all">
+                            <span class="material-symbols-outlined text-lg">quiz</span> 智能题库
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tab Content Area (Scrollable) -->
+                <div class="flex-grow overflow-y-auto p-10 space-y-8 custom-scrollbar">
+                    <!-- Section: Materials List (Default View) -->
+                    <div id="materialsView" class="tab-content transition-opacity duration-300">
+                        <div class="flex items-center justify-between mb-8">
+                            <h5 class="text-lg font-bold font-headline">高等数学 (下) - 原始备课材料</h5>
+                            <span class="text-xs text-on-surface-variant font-medium">共 12 份文件</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- File Card -->
+                            <div class="p-4 bg-white rounded-2xl border border-slate-200 hover:border-primary/30 hover:shadow-md transition-all group">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-3xl">picture_as_pdf</span>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <h6 class="text-sm font-bold truncate">高等数学_12讲_微分方程.pptx</h6>
+                                        <p class="text-[10px] text-on-surface-variant mt-1 uppercase font-bold tracking-tight">PPTX | 15.4 MB | 2026-03-18</p>
+                                    </div>
+                                    <button class="text-on-surface-variant hover:text-primary transition-colors">
+                                        <span class="material-symbols-outlined text-lg">download</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-white rounded-2xl border border-slate-200 hover:border-primary/30 transition-all">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-3xl">description</span>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <h6 class="text-sm font-bold truncate">第一章_导数基础复习.docx</h6>
+                                        <p class="text-[10px] text-on-surface-variant mt-1 uppercase font-bold tracking-tight">DOCX | 2.1 MB | 2026-03-15</p>
+                                    </div>
+                                    <button class="text-on-surface-variant hover:text-primary transition-colors">
+                                        <span class="material-symbols-outlined text-lg">download</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-white rounded-2xl border border-slate-200 hover:border-primary/30 transition-all">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-3xl">movie</span>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <h6 class="text-sm font-bold truncate">教学演示_曲率半径.mp4</h6>
+                                        <p class="text-[10px] text-on-surface-variant mt-1 uppercase font-bold tracking-tight">MP4 | 142.0 MB | 2026-03-10</p>
+                                    </div>
+                                    <button class="text-on-surface-variant hover:text-primary transition-colors">
+                                        <span class="material-symbols-outlined text-lg">visibility</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section: AI Outline View -->
+                    <div id="outlineView" class="tab-content hidden transition-opacity duration-300">
+                        <div class="flex items-center justify-between mb-8">
+                            <h5 class="text-lg font-bold font-headline">AI 自动生成的授课大纲</h5>
+                            <button class="text-xs text-primary font-bold bg-primary/5 px-4 py-2 rounded-xl">下载解析报告</button>
+                        </div>
+                        <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
+                            <section>
+                                <div class="font-bold text-sm text-on-surface border-b border-primary/10 pb-2 mb-4">第一章：微分方程基础</div>
+                                <div class="knowledge-tree-border space-y-4">
+                                    <div class="flex items-start gap-2">
+                                        <span class="bg-primary/10 text-primary text-[10px] font-bold px-1.5 rounded mt-1">1.1</span>
+                                        <div class="flex-grow">
+                                            <p class="text-sm font-bold">微分方程的定义与阶数</p>
+                                            <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">理解导数方程与原函数关系，掌握最高阶导数判定法。</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <span class="bg-primary/10 text-primary text-[10px] font-bold px-1.5 rounded mt-1">1.2</span>
+                                        <div class="flex-grow">
+                                            <p class="text-sm font-bold">变量可分离微分方程</p>
+                                            <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">重点掌握 M(x)dx + N(y)dy = 0 的标准形式与两端积分法。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <div class="font-bold text-sm text-on-surface border-b border-primary/10 pb-2 mb-4">核心知识点提取</div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 italic text-xs text-on-surface-variant">
+                                        "微分方程的解若含有任意常数，且常数个数与方程阶数相同，则为通解。"
+                                    </div>
+                                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 italic text-xs text-on-surface-variant">
+                                        "一阶线性非齐次方程通解由齐次方程通解加非齐次方程特解构成。"
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+
+                    <!-- Section: Quiz Preview (Mock) -->
+                    <div id="quizView" class="tab-content hidden transition-opacity duration-300">
+                        <div class="flex items-center justify-between mb-8">
+                            <h5 class="text-lg font-bold font-headline">智能题库 (基于微分方程章节)</h5>
+                            <button class="text-primary text-xs font-bold font-headline border border-primary/20 px-4 py-2 rounded-xl hover:bg-primary/5 transition-all">重新生成新题库</button>
+                        </div>
+                        <div class="space-y-6">
+                            <!-- Question Card -->
+                            <div class="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group">
+                                <div class="absolute top-0 right-0 w-24 h-24 bg-quiz-gold/5 flex items-center justify-center -rotate-12 translate-x-8 -translate-y-8 group-hover:rotate-0 transition-transform">
+                                    <span class="material-symbols-outlined text-quiz-gold text-4xl">lightbulb</span>
+                                </div>
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="text-[10px] font-black uppercase px-2 py-0.5 bg-quiz-gold/10 text-quiz-gold rounded">单选题</span>
+                                    <span class="text-[10px] font-black uppercase px-2 py-0.5 bg-slate-100 text-on-surface-variant rounded">难度: 中等</span>
+                                </div>
+                                <h6 class="text-sm font-bold mb-4 leading-relaxed">1. 下列方程中，属于一阶线性微分方程的是？</h6>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-medium hover:border-primary/30 transition-all cursor-pointer">A. y' + y^2 = 0</div>
+                                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-medium hover:border-primary/30 transition-all cursor-pointer">B. y' + P(x)y = Q(x)</div>
+                                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-medium hover:border-primary/30 transition-all cursor-pointer">C. y'' + y = 0</div>
+                                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-medium hover:border-primary/30 transition-all cursor-pointer">D. xy' + y = x^2</div>
+                                </div>
+                                <div class="mt-4 pt-4 border-t border-slate-100 flex justify-end">
+                                    <button class="text-[10px] font-bold text-primary group-hover:underline">查看 AI 解析答案</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all content
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            
+            // Remove active style from all tabs
+            document.querySelectorAll('[id^="tab-"]').forEach(el => {
+                el.classList.remove('tab-active', 'font-bold');
+                el.classList.add('text-on-surface-variant', 'font-medium');
+            });
+
+            // Show selected content
+            document.getElementById(tabName + 'View').classList.remove('hidden');
+            
+            // Activate selected tab
+            const activeTab = document.getElementById('tab-' + tabName);
+            activeTab.classList.add('tab-active', 'font-bold');
+            activeTab.classList.remove('text-on-surface-variant', 'font-medium');
+        }
+    </script>
+</body>
+</html>
