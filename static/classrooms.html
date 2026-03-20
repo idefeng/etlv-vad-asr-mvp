@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Scholarly Observer AI - 全部课堂中心</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                "secondary": "#006a6a",
+                "on-surface-variant": "#424751",
+                "on-surface": "#191c1e",
+                "on-primary": "#ffffff",
+                "background": "#f7f9fb",
+                "primary": "#00346f",
+                "surface-container-low": "#f2f4f6",
+                "surface-container-lowest": "#ffffff",
+                "live-red": "#ba1a1a"
+              },
+              fontFamily: { "headline": ["Manrope"], "body": ["Inter"] },
+            },
+          },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-header { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
+        .course-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -10px rgba(0, 52, 111, 0.15); }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface antialiased">
+    <!-- SideNavBar (Shared) -->
+    <aside class="h-screen w-64 fixed left-0 top-0 z-40 bg-surface-container-low flex flex-col py-6 px-4">
+        <div class="mb-10 px-4">
+            <h1 class="text-xl font-bold text-primary tracking-tight font-headline">监控指挥中心</h1>
+            <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mt-1">AI Monitoring Active</p>
+        </div>
+        <nav class="flex-grow space-y-1">
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-white/50 rounded-lg transition-all" href="/">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-medium">监控看板</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 bg-white text-primary font-bold rounded-lg shadow-sm" href="/classrooms">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">class</span>
+                <span class="font-medium">全部课堂</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-white/50 rounded-lg transition-all" href="/management">
+                <span class="material-symbols-outlined">upload_file</span>
+                <span class="font-medium">课前备课</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-white/50 rounded-lg transition-all" href="/monitoring">
+                <span class="material-symbols-outlined">analytics</span>
+                <span class="font-medium">课堂实时监控</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-white/50 rounded-lg transition-all" href="/assessment">
+                <span class="material-symbols-outlined">assignment_turned_in</span>
+                <span class="font-medium">教学质量评估</span>
+            </a>
+        </nav>
+        <div class="mt-auto pt-6 border-t border-outline-variant/30">
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-white/50 rounded-lg" href="/login">
+                <span class="material-symbols-outlined">account_circle</span>
+                <span class="font-medium">系统登录</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="ml-64 p-10 mt-16 min-h-screen">
+        <!-- Header & Search -->
+        <div class="flex justify-between items-end mb-10">
+            <div>
+                <nav class="flex gap-2 text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-2">
+                    <a href="/" class="hover:text-primary">Dashboard</a>
+                    <span>/</span>
+                    <span class="text-primary">All Classrooms</span>
+                </nav>
+                <h2 class="text-3xl font-extrabold text-on-surface font-headline tracking-tighter">全部课堂中心</h2>
+            </div>
+            <div class="flex gap-4">
+                <div class="relative w-80">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-lg">search</span>
+                    <input type="text" placeholder="搜索课程、讲师或教室..." class="w-full pl-12 pr-4 py-3 bg-white border-none rounded-2xl shadow-sm focus:ring-2 focus:ring-primary/20 text-sm">
+                </div>
+                <button class="bg-primary text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all">
+                    <span class="material-symbols-outlined text-lg">tune</span>
+                    高级筛选
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="flex gap-6 border-b border-surface-container-low mb-8">
+            <button class="pb-4 px-2 text-sm font-bold border-b-2 border-primary text-primary">正在进行 (12)</button>
+            <button class="pb-4 px-2 text-sm font-bold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface">即将开始 (48)</button>
+            <button class="pb-4 px-2 text-sm font-bold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface">历史课程</button>
+        </div>
+
+        <!-- Classroom Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <!-- Row 1: Live -->
+            <div class="course-card bg-white rounded-3xl p-6 shadow-sm border border-transparent transition-all">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="px-3 py-1 bg-live-red/10 text-live-red text-[10px] font-black rounded-full flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 bg-live-red rounded-full animate-pulse"></span> 直播监控中
+                    </div>
+                    <span class="text-[10px] font-bold text-on-surface-variant bg-surface-container-low px-2 py-1 rounded">302 阶梯教室</span>
+                </div>
+                <h4 class="text-lg font-bold mb-1">高等数学 (下) - 微分方程</h4>
+                <p class="text-xs text-on-surface-variant mb-6">张建国 教授 | 课程编号：MATH-102</p>
+                <div class="flex items-center justify-between pt-6 border-t border-surface-container-low">
+                    <div class="flex -space-x-2">
+                        <img class="w-7 h-7 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?u=1">
+                        <img class="w-7 h-7 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?u=2">
+                        <div class="w-7 h-7 rounded-full bg-primary-container text-[8px] flex items-center justify-center font-bold text-white border-2 border-white">+56</div>
+                    </div>
+                    <a href="/monitoring" class="text-primary font-bold text-xs flex items-center gap-1 hover:underline">进入实时监控 <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
+                </div>
+            </div>
+
+            <div class="course-card bg-white rounded-3xl p-6 shadow-sm border border-transparent transition-all">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="px-3 py-1 bg-live-red/10 text-live-red text-[10px] font-black rounded-full flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 bg-live-red rounded-full animate-pulse"></span> 直播监控中
+                    </div>
+                    <span class="text-[10px] font-bold text-on-surface-variant bg-surface-container-low px-2 py-1 rounded">线上 B1</span>
+                </div>
+                <h4 class="text-lg font-bold mb-1">数字信号处理</h4>
+                <p class="text-xs text-on-surface-variant mb-6">李明 副教授 | 课程编号：EE-402</p>
+                <div class="flex items-center justify-between pt-6 border-t border-surface-container-low">
+                    <div class="flex -space-x-2">
+                        <img class="w-7 h-7 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?u=3">
+                        <img class="w-7 h-7 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?u=4">
+                        <div class="w-7 h-7 rounded-full bg-primary-container text-[8px] flex items-center justify-center font-bold text-white border-2 border-white">+85</div>
+                    </div>
+                    <a href="/monitoring" class="text-primary font-bold text-xs flex items-center gap-1 hover:underline">进入实时监控 <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
+                </div>
+            </div>
+
+            <div class="course-card bg-white rounded-3xl p-6 shadow-sm border border-transparent transition-all">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="px-3 py-1 bg-secondary/10 text-secondary text-[10px] font-black rounded-full">正常运行中</div>
+                    <span class="text-[10px] font-bold text-on-surface-variant bg-surface-container-low px-2 py-1 rounded">501 语言实验室</span>
+                </div>
+                <h4 class="text-lg font-bold mb-1">大学英语口语</h4>
+                <p class="text-xs text-on-surface-variant mb-6">Sarah Jenkins | 课程编号：ENG-201</p>
+                <div class="flex items-center justify-between pt-6 border-t border-surface-container-low">
+                    <div class="flex -space-x-2">
+                        <img class="w-7 h-7 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?u=5">
+                        <img class="w-7 h-7 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?u=6">
+                        <div class="w-7 h-7 rounded-full bg-primary-container text-[8px] flex items-center justify-center font-bold text-white border-2 border-white">+28</div>
+                    </div>
+                    <a href="/monitoring" class="text-primary font-bold text-xs flex items-center gap-1 hover:underline">进入实时监控 <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
+                </div>
+            </div>
+
+            <!-- Row 2: Upcoming -->
+            <div class="course-card bg-surface-container-low/50 rounded-3xl p-6 border border-transparent opacity-80">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="px-3 py-1 bg-on-surface-variant/10 text-on-surface-variant text-[10px] font-black rounded-full">即将开始 (14:30)</div>
+                    <span class="text-[10px] font-bold text-on-surface-variant bg-white px-2 py-1 rounded">402 实验室</span>
+                </div>
+                <h4 class="text-lg font-bold mb-1 text-slate-500">基础物理实验</h4>
+                <p class="text-xs text-on-surface-variant mb-6">王力强 | 课程编号：PHY-105</p>
+                <div class="flex items-center justify-between pt-6 border-t border-outline-variant/30">
+                    <p class="text-[10px] font-bold text-on-surface-variant uppercase">待开课</p>
+                    <button class="text-on-surface-variant font-bold text-xs flex items-center gap-1 opacity-50 cursor-not-allowed">预备监控</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

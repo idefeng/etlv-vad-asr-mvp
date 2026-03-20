@@ -113,6 +113,10 @@ async def get_dashboard():
 async def get_assessment():
     return FileResponse("static/assessment.html")
 
+@app.get("/classrooms")
+async def get_classrooms():
+    return FileResponse("static/classrooms.html")
+
 @app.get("/management")
 async def get_management():
     return FileResponse("static/management.html")
